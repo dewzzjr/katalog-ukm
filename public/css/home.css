@@ -1,0 +1,30 @@
+
+body {
+    background-color: #FFFFFF;
+}
+
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+.ui.search.segment {
+    margin-top: 3em;
+}
+
+.wireframe {
+    margin-top: 2em;
+}
+
+.ui.footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+}
+
+.mapper {
+    width: inherit;
+    height: 300px;
+}
+
+.header.map {
+    padding-top: 1em;
+}
