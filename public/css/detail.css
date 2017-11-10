@@ -32,9 +32,17 @@ body .inverted.upper {
     transition: left 0.5s ease;
 }
 
-.secondary.menu.fixed {
+/* .secondary.menu.fixed {
     border: 1px solid rgba(0, 0, 0, 0.4);
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+} */
+
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+.main.container {
+    margin-top: 3em;
 }
 
 .ui.secondary.inverted.menu {
@@ -45,13 +53,6 @@ body .inverted.upper {
     left: 800px;
 }
 
-.text.container .left.floated.image {
-    margin: 2em 2em 2em -4em;
-}
-
-.text.container .right.floated.image {
-    margin: 2em -4em 2em 2em;
-}
 
 .ui.footer.segment {
     margin: 5em 0em 0em;

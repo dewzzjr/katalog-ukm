@@ -157,9 +157,7 @@
             <div class="ui container">
                 <div class="ui large secondary pointing menu">
                     <a class="toc item">
-                        <i class="sidebar icon">
-                          <img src="icon.png" alt="Logo Katalog UKM" />
-                        </i>
+                          <img class="ui avatar image"src="icon.png" alt="Logo Katalog UKM" />
                     </a>
                     <a class="active item" href="{{ route('home') }}">Beranda</a>
                     <a class="item" href="#contact">Kontak Kami</a>
@@ -177,11 +175,13 @@
                 </h1>
                 <h2>Memberikan informasi tentang Usaha Kecil Menengah beserta produk yang ditawarkan.</h2>
                 <div class="ui center aligned basic segment">
+                <form method="GET" action="{{ route('home') }}">
                     <div class="ui left icon action input">
                         <i class="search icon"></i>
-                        <input type="text" placeholder="Kata Kunci">
-                        <div class="ui blue submit button">Cari</div>
+                        <input name="query" type="text" placeholder="Kata Kunci">
+                        <button class="ui blue submit button">Cari</button>
                     </div>
+                </form>
                 </div>
             </div>
 

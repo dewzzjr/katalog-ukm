@@ -21,7 +21,7 @@
                             <div class="content">
                                 <div class="header">Email</div>
                                 <div class="list">
-                                    <a class="item">
+                                    <a href="mailto:{{ $data->owner->email }}"class="item">
                                     {{ $data->owner->email }}
                                     </a>
                                 </div>
