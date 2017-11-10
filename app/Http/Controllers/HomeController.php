@@ -43,16 +43,22 @@ class HomeController extends Controller
             $cat = $this->getCategory($key->category);
 
             // Get Address
-            $address = $key->alamat . ', ';
-            $address .= $key->kecamatan . ', ';
-            $address .= $key->kabupaten;
+            $address = $this->getAddress($key);
+            // $address = $key->alamat . ', ';
+            // $address .= $key->kecamatan . ', ';
+            // $address .= $key->kabupaten;
 
             // Set Mapper
-            $mapDescription = $key->name . ": " . $key->description;
+            // $mapDescription = $key->name . ": " . $key->description;
             Mapper::map(
                 $key->latitude, 
                 $key->longitude
             );
+
+            // $key->count = $count;
+            // $key->cat_color =  $cat['color'];
+            // $key->cat_icon = $cat['icon'];
+            // $key->order = $i++;
 
             // Set result Array
             array_push($result, [
@@ -70,6 +76,8 @@ class HomeController extends Controller
             ]);
         }
         
+        // return $data;
+        // return view('home')->with('data', $data);
         return view('home')->with('data', $result);
     }
 
@@ -102,21 +110,53 @@ class HomeController extends Controller
         $owner = $ukm->owner()->first();
         $contact = $ukm->detail()->get();
         $product = $ukm->product()->get();
+        $image = $ukm->image()->get();
+        $phone = $ukm->phone()->first();
+        $location = $ukm->location()->first();
 
         $ukm['category'] = $category;
         $ukm['owner'] = $owner;
+        $ukm['address'] = $this->getAddress($location);
+        $ukm['phone'] = $phone;
         $ukm['contact'] = $contact;
         $ukm['product'] = $product;
-        
+        $ukm['gallery'] = $image;
         unset($ukm['category_id']);
         unset($ukm['user_id']);
-        return $ukm;
-        
-        $data = [
-            'name' => $ukm->name,
-            'contact' => $ukm->contact,
-            'product' => $ukm->product,
+        $types = [
+                'website',
+                'telepon',
+                'whatsapp',
+                'facebook',
+                'instagram',
+                'twitter',
+                'line',
+                'tokopedia',
+                'bukalapak',
         ];
-        return view('detail.ukm')->with($data);
+        foreach($types as $type) 
+        {
+            $ukm['has_' . $type] = false;
+        }
+        if( ! is_null($ukm->phone))
+        {
+            unset($ukm->phone->ukm_id);
+            unset($ukm->phone->id);
+        }
+        for($i=0; $i < sizeOf($ukm->contact); $i++) 
+        {
+            $ukm['has_' . $ukm->contact[$i]->type] = true;
+            unset($ukm->contact[$i]->ukm_id);
+            unset($ukm->contact[$i]->id);
+        }
+        // return $ukm;
+        return view('detail.ukm')->with('data', $ukm);
+    }
+
+    private function getAddress($location) {
+        $address = $location->alamat . ', ';
+        $address .= $location->kecamatan . ', ';
+        $address .= $location->kabupaten;
+        return $address;
     }
 }

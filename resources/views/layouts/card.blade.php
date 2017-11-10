@@ -2,12 +2,8 @@
     <div class="ui fluid">
         
         <div class="content mapper">
-            @php 
-            // Mapper::map($latitude, $longitude); 
-            @endphp
             {!! Mapper::render($order) !!}
         </div>
-        {{--  <img src="{{ $image }}">  --}}
     </div>
     <div class="content">
         <div class="ui {{ $cat_color }} right ribbon label">

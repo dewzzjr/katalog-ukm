@@ -1,6 +1,6 @@
 @extends('layout') 
 
-@section('title', $name) 
+@section('title', 'UKM - ' . $data->name) 
 
 @section('style')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/detail.css') }}">
@@ -9,7 +9,7 @@
 
 @section('content')
 @include('detail.components.header')
-@include('detail.components.sidebar')
+@include('detail.components.navbar')
     <!-- Tab container -->
     <div id="sticky-menu" class="ui text container borderless">
         <div class="left ui rail internal">

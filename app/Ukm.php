@@ -39,6 +39,11 @@ class Ukm extends Model
         return DB::table('locations')->where('ukm_id', $this->id );
     }
 
+    public function phone()
+    {
+        return DB::table('ukm_details')->where('ukm_id', $this->id )->where('type', 'telepon');
+    }
+
     public function scopeCard( $query )
     {
         return $query
