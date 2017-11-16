@@ -33,13 +33,13 @@
         <div class="ui fluid large red submit button">Login</div>
       </div>
 
+      @if ($errors->any())
       <div class="ui error message">
-        @if ($errors->has('email') OR $errors->has('password'))
-            <li>{{ $errors->first('email') }}</li>
-            <li>{{ $errors->first('password') }}</li>
-        @endif
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
       </div>
-
+      @endif
     </form>
 
     <div class="ui message">

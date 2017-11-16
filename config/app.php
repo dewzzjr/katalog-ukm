@@ -229,6 +229,11 @@ return [
          * Package Aliases
          */
         'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
+        
+        /**
+         * Custom Aliases
+         */
+        'auth.password.tokens' => Illuminate\Auth\Passwords\TokenRepositoryInterface::class,
     ],
 
 ];
