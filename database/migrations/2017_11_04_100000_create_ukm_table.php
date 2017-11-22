@@ -19,7 +19,9 @@ class CreateUkmTable extends Migration
             $table->string('description');
             $table->integer('user_id')->unsigned();
             $table->integer('category_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories');
         });
     }

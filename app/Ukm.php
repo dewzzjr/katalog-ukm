@@ -36,7 +36,7 @@ class Ukm extends Model
 
     public function location()
     {
-        return DB::table('locations')->where('ukm_id', $this->id );
+        return $this->hasOne('App\Location');
     }
 
     public function phone()

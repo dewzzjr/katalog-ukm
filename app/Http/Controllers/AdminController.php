@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Product;
 use App\Ukm;
+use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
+use Cornford\Googlmapper\MapperServiceProvider;
 
 class AdminController extends Controller
 {
@@ -50,12 +52,37 @@ class AdminController extends Controller
     
     public function ukm()
     {
-        return view('admin.ukm');
+        $ukms = Ukm::all();
+        $ukms = $ukms->each(function ($item, $key) {
+            $item->user = $item->owner()->first();
+            $item->cat = $item->category()->first();
+            $item->location = $item->location()->first();
+        });
+        $data = [
+            'ukms' => $ukms,
+        ];
+        // -8, 112, 
+        Mapper::location('Blitar')->map(['zoom' => 14, 'marker' => false, 'eventBeforeLoad' => 'addMarkerListener(map);']);
+        // return $data;
+        return view('admin.ukm')->with($data);
+    }
+
+    public function image()
+    {
+
     }
     
     public function product()
     {
-        return view('admin.product');
+        $products = Product::all();
+        $products = $products->each(function ($item, $key) {
+            $item->ukm = $item->productedBy()->first();
+        });
+        $data = [
+            'products' => $products,
+        ];
+        // return $data;
+        return view('admin.product')->with($data);
     }
 
     

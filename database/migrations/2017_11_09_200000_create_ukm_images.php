@@ -19,7 +19,7 @@ class CreateUkmImages extends Migration
             $table->string('path');
             $table->string('name');
             $table->timestamps();
-            $table->foreign('ukm_id')->references('id')->on('ukm');
+            $table->foreign('ukm_id')->references('id')->on('ukm')->onDelete('cascade');
         });
     }
 

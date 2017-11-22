@@ -34,7 +34,16 @@ Route::prefix('admin')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/admin/user/add', 'UserController@create');
     Route::post('/admin/user/{id}/edit', 'UserController@update');
+
+    Route::post('/admin/ukm/add', 'UkmController@create');
+    Route::post('/admin/ukm/{id}/edit', 'UkmController@update');
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin/user/{id}/delete', 'UserController@delete');
+        Route::get('/admin/ukm/{id}/delete', 'UkmController@delete');
     });
+});
+
+Route::prefix('ajax')->group(function () {
+    Route::get('user', 'AjaxController@getUser');
+    Route::get('category', 'AjaxController@getCategory');
 });

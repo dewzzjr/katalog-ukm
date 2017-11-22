@@ -28,7 +28,8 @@ class CreateUkmDetailsTable extends Migration
                 'tokopedia',
                 'bukalapak'
             ]);
-            $table->foreign('ukm_id')->references('id')->on('ukm');
+            $table->softDeletes();
+            $table->foreign('ukm_id')->references('id')->on('ukm')->onDelete('cascade');
         });
     }
 

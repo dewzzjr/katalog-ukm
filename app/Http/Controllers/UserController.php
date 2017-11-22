@@ -84,4 +84,5 @@ class UserController extends Controller
         $user->save();
         return  redirect()->back()->with('message', 'Email untuk reset password sudah terkirim.');
     }
+
 }

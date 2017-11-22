@@ -21,7 +21,9 @@ class CreateLocationsTable extends Migration
             $table->string('kabupaten');
             $table->float('longitude', 10, 6);
             $table->float('latitude', 10, 6);
-            $table->foreign('ukm_id')->references('id')->on('ukm');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('ukm_id')->references('id')->on('ukm')->onDelete('cascade');
         });
     }
 
