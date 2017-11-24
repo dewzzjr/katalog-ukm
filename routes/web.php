@@ -57,4 +57,5 @@ Route::prefix('ajax')->group(function () {
     Route::get('user', 'AjaxController@getUser');
     Route::get('category', 'AjaxController@getCategory');
     Route::get('ukm', 'AjaxController@getUkm');
+    Route::get('product', 'AjaxController@getProduct');
 });

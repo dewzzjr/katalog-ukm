@@ -15,17 +15,21 @@
         <a href="{{ route('home') }}" class="item">
             <i class="block layout icon"></i> Home
         </a>
-        <a class="ui right link item" href="{{ route('user') }}">
-            <i class="user icon"></i> Profil
-        </a>
-        <a class="ui item inverted button" href="{{ route('logout') }}"
-            onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-            Logout
-        </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            {{ csrf_field() }}
-        </form>
+		@guest
+			<a class="ui right item inverted button" href="{{ route('login') }}">Login</a>
+		@else
+			<a class="ui right link item" href="{{ route('user') }}">
+				<i class="user icon"></i> {{ Auth::user()->name }}
+			</a>
+			<a class="ui item inverted button" href="{{ route('logout') }}"
+				onclick="event.preventDefault();
+							document.getElementById('logout-form').submit();">
+				Logout
+			</a>
+			<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+				{{ csrf_field() }}
+			</form>
+		@endguest
     </div>
   </div>
 
