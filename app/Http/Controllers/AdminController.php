@@ -8,6 +8,7 @@ use App\Product;
 use App\Ukm;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Cornford\Googlmapper\MapperServiceProvider;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -69,9 +70,25 @@ class AdminController extends Controller
 
     public function image()
     {
-
+        $products = DB::table('product_images')->orderBy('product_id', 'asc')->get();
+        $ukms = DB::table('ukm_images')->orderBy('ukm_id', 'asc')->get();
+        $users = DB::table('user_images')->orderBy('user_id', 'asc')->get();
+        $data = [
+            'ukms' => $this->convertPath($ukms),
+            'users' => $this->convertPath($users),
+            'products' => $this->convertPath($products),
+        ];
+        // return $data;
+        return view('admin.image')->with($data);
     }
-    
+
+    private function convertPath( $images ) {
+        foreach ($images as $image) {
+            $image->path = $image->path . sprintf("%03d", $image->id) . '.' . $image->ext;
+        }
+        return $images;
+    }
+
     public function product()
     {
         $products = Product::all();

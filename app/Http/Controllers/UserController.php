@@ -16,6 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->isAdmin()) return redirect('admin');
         return view('user');
     }
 

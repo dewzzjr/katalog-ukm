@@ -23,4 +23,11 @@ class AjaxController extends Controller
         $query = $query->take(5)->get();
         return $query;
     }
+    public function getUkm(Request $request)
+    {
+        $query = DB::table('ukm')->select('id','name');
+        if (($q = $request->input('query')) != null) $query = $query->whereRaw('LOWER(`name`) LIKE ? ',['%'.trim(strtolower($q)).'%']);
+        $query = $query->take(5)->get();
+        return $query;
+    }
 }

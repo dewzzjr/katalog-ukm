@@ -20,7 +20,6 @@ class UkmController extends Controller
         return view('ukm');
     }
 
-    
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [

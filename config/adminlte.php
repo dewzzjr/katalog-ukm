@@ -127,6 +127,12 @@ return [
             'icon'        => 'shopping-cart',
             'active'      => ['admin/product', 'admin/product/*'],
         ],
+        [
+            'text'        => 'Gambar',
+            'url'         => 'admin/image',
+            'icon'        => 'picture-o',
+            'active'      => ['admin/image', 'admin/image/*'],
+        ],
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',

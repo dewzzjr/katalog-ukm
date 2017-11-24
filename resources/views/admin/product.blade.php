@@ -24,6 +24,11 @@
               </div>
               <div class="modal-body">
                 <div class="form-group">
+                  <label>UKM</label>
+                  <select name="ukm_id" id="editUkm" class="form-control select2" style="width: 100%;">
+                  </select>
+                </div>
+                <div class="form-group">
                   <label for="nama">Nama</label>
                   <input type="text" class="form-control" name="name" id="editNama" placeholder="Masukkan Nama">
                 </div>
@@ -35,7 +40,7 @@
                   <label for="harga">Harga</label>
 									<div class="input-group">
 										<span class="input-group-addon">Rp</span>
-										<input type="number" class="form-control" name="harga" id="editHarga" placeholder="Deskripsi Produk Anda">
+										<input type="number" class="form-control" name="price" id="editHarga" placeholder="Harga Produk per Pembelian">
 									</div>
                 </div>
               </div>
@@ -72,7 +77,13 @@
               <!-- /.box-header -->
               <!-- form start -->
               <form role="form" method="post" action="{{ url('admin/product/add') }}">
+              {!! csrf_field() !!}
                 <div class="box-body">
+                  <div class="form-group">
+                    <label>UKM</label>
+                    <select name="ukm_id" id="addUkm" class="form-control select2" style="width: 100%;">
+                    </select>
+                  </div>
 									<div class="form-group">
 										<label for="nama">Nama</label>
 										<input type="text" class="form-control" name="name" id="addNama" placeholder="Masukkan Nama">
@@ -85,7 +96,7 @@
 										<label for="harga">Harga</label>
                   	<div class="input-group">
 											<span class="input-group-addon">Rp</span>
-											<input type="number" class="form-control" name="harga" id="addHarga" placeholder="Deskripsi Produk Anda">
+											<input type="number" class="form-control" name="price" id="addHarga" placeholder="Harga Produk per Pembelian">
 										</div>
 									</div>
                 </div>
@@ -109,8 +120,9 @@
                 <thead>
                 <tr>
                   <th>Nama</th>
-                  <th>Deskripsi</th>
                   <th>UKM</th>
+                  <th>Deskripsi</th>
+                  <th>Harga</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -118,7 +130,6 @@
                 @foreach( $products as $product )
                     <tr>
                       <td><a href="{{ url('/admin/product/' . $product->id) }}">{{ $product->name }}</a></td>
-                      <td><a href="mailto:{{$product->description}}">{{ $product->description }}</a></td>
                       <td>
                         @if(isset($product->ukm))
                         <a href="{{ url('/admin/ukm/' . $product->ukm->id) }}">
@@ -126,6 +137,8 @@
                         </a>
                         @endif
                       </td>
+                      <td>{{ $product->description }}</td>
+                      <td>{{ $product->money }}</td>
                       
                       <td>
                       <div class="btn-group-vertical btn-block">
@@ -135,6 +148,9 @@
                             data-toggle="modal" 
                             data-target="#editProduct"
                             data-nama="{{ $product->name }}"
+                            data-price="{{ $product->price }}"
+                            data-ukm="{{ $product->ukm_id }}"
+                            data-ukmname="{{ $product->ukm->name }}"
                             data-description="{{ $product->description }}"
                             data-id="{{ $product->id }}">
                                 Edit
@@ -156,8 +172,9 @@
                 <tfoot>
                 <tr>
                   <th>Nama</th>
-                  <th>Deskripsi</th>
                   <th>UKM</th>
+                  <th>Deskripsi</th>
+                  <th>Harga</th>
                   <th>Action</th>
                 </tr>
                 </tfoot>
@@ -177,27 +194,43 @@
 @stop
 
 @section('js')
-		<script src="
-//cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {};
         $(document).ready(function() {
-            $('#product').DataTable( {
-							dom: 'Bfrtip',
-							buttons: [
-									{
-											text: `
-                            <button 
-                                type="button" 
-                                class="btn btn-success">
-                                    Edit
-                            </button>`,
-											action: function () {
-													$('#editProduct').modal('show')
-											}
-									}
-							]
-						});
+            $('#product').DataTable();
         });
+        var ajax = {
+          minimumInputLength: 2,
+          placeholder: 'Masukkan Nama UKM',
+          ajax: {
+              url: '{{ url("ajax/ukm") }}',
+              dataType: 'json',
+              type: "GET",
+              delay: 50,
+              data: function (params) {
+                console.log(params);
+                  return {
+                      query: params.term,
+                  };
+              },
+              processResults: function (data) {
+                  return {
+                      results: $.map(data, function (item) {
+                          console.log(data);
+                          return {
+                              text: item.name,
+                              id: item.id
+                          }
+                      })
+                  };
+              },
+              cache: true
+          }
+        }
+        $('#addUkm').select2(ajax);
+        $('#editUkm').select2(ajax);
+
         $('#editProduct').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
 						
@@ -205,16 +238,22 @@
             var id = button.data('id') 
 						console.log(id)
 						if(id == null) {
-							$('#editNama').val("")
-							$('#editDescription').val("")
-							modal.find('form').attr('action', '{{ url("admin/product/add") }}')
+							{{--  modal.find('form').attr('action', '{{ url("admin/product/add") }}')  --}}
 						} else {
 							var nama = button.data('nama') 
-							var email = button.data('email') 
+							var description = button.data('description') 
+							var price = button.data('price') 
+							var ukm = button.data('ukm') 
+							var ukmname = button.data('ukmname') 
+							$('#editUkm').html($('<option>', {
+                    selected: 'selected',
+                    value: ukm,
+                    text: ukmname
+                }))
 							$('#editNama').val(nama)
-							$('#editDescription').val(email)
+							$('#editDescription').val(description)
+							$('#editHarga').val(price)
 							modal.find('form').attr('action', '{{ url("admin/product") }}/' + id + '/edit')
-							console.log(id + nama + email)
 						}
         })
     </script>
