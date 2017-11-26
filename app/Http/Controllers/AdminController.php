@@ -40,7 +40,7 @@ class AdminController extends Controller
 
     public function user()
     {
-        $users = User::where('is_admin', 0)->get();
+        $users = User::all();
         $users = $users->each(function ($item, $key) {
             $item->ukm = $item->ukm()->first();
         });

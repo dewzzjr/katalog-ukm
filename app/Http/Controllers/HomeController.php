@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Ukm;
+use App\User;
 use App\Category;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Cornford\Googlmapper\MapperServiceProvider;
@@ -36,49 +38,39 @@ class HomeController extends Controller
         $result = array();
         $i = 0;
         foreach ($data as $key) {
-            // Get count Product
-            $count = Ukm::find($key->id)->product()->count();
-
-            // Get Category
-            $cat = $this->getCategory($key->category);
-
-            // Get Address
-            $address = $this->getAddress($key);
-            // $address = $key->alamat . ', ';
-            // $address .= $key->kecamatan . ', ';
-            // $address .= $key->kabupaten;
-
-            // Set Mapper
-            // $mapDescription = $key->name . ": " . $key->description;
-            Mapper::map(
-                $key->latitude, 
-                $key->longitude
-            );
-
-            // $key->count = $count;
-            // $key->cat_color =  $cat['color'];
-            // $key->cat_icon = $cat['icon'];
-            // $key->order = $i++;
-
-            // Set result Array
-            array_push($result, [
-                'id'            => $key->id,
-				'order'			=> $i++,
-				'name' 			=> $key->name,
-				'description' 	=> $key->description,
-				'category' 		=> $key->category,
-				'latitude' 		=> $key->latitude,
-				'longitude'		=> $key->longitude,
-				'count'			=> $count,
-				'cat_color' 	=> $cat['color'],
-				'cat_icon' 		=> $cat['icon'],
-				'address' 		=> $address,
-            ]);
+            array_push($result, $this->constructCard($key, $i));
+            $i++;
         }
         
         // return $data;
-        // return view('home')->with('data', $data);
         return view('home')->with('data', $result);
+    }
+
+    private function constructCard($key, $order) {
+        $count = Ukm::find($key->id)->product()->count();
+        $cat = $this->getCategory($key->category);
+        $address = $this->getAddress($key);
+        Mapper::map(
+            $key->latitude, 
+            $key->longitude
+        );
+
+        return [
+            'id'            => $key->id,
+            'order'			=> $order,
+            'name' 			=> $key->name,
+            'description' 	=> $key->description,
+            'category' 		=> $key->category,
+            'latitude' 		=> $key->latitude,
+            'longitude'		=> $key->longitude,
+            'count'			=> $count,
+            'cat_color' 	=> $cat['color'],
+            'cat_icon' 		=> $cat['icon'],
+            'address' 		=> $address,
+            'alamat' 		=> $key->alamat,
+            'kecamatan' 	=> $key->kecamatan,
+            'kabupaten' 	=> $key->kabupaten,
+        ];
     }
 
     private function getCategory(string $type)
@@ -151,6 +143,32 @@ class HomeController extends Controller
         }
         // return $ukm;
         return view('detail.ukm')->with('data', $ukm);
+    }
+
+    public function getProfile($id = null) {
+        if ($id == null) {
+            $id = Auth::id();
+            if($id == null) return redirect()->route('login');
+        }
+        $user = User::findOrFail($id);
+        $user->ukm = $user->ukm()->card()->first();
+        $image = $user->image()->first();
+        $user->url = ( $image != null ? 'storage/' . $image->path : 'default-profile.jpg');
+        if( $user->ukm != null )
+        {
+            $user->ukm = $this->constructCard($user->ukm, 0);
+        } else {
+            Mapper::location('Blitar')->map(['marker' => false, 'eventBeforeLoad' => 'addMarkerListener(map);']);
+        }
+
+        if( $user->id == Auth::id() )
+        {
+            Mapper::map($user->ukm['latitude'], $user->ukm['longitude'], ['marker' => true, 'eventBeforeLoad' => 'addMarkerListener(map);']);
+                    //->marker($user->ukm['latitude'], $user->ukm['longitude']);
+                    
+        }
+        // return $user;
+        return view('user.profile')->with('data', $user);
     }
 
     private function getAddress($location) {

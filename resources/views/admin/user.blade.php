@@ -93,7 +93,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="user" class="table table-bordered table-hover">
+              <table id="user" class="table table-bordered">
                 <thead>
                 <tr>
                   <th>Nama</th>
@@ -105,7 +105,9 @@
                 <tbody>
                 @foreach( $users as $user )
                     <tr>
-                      <td><a href="{{ url('/admin/user/' . $user->id) }}">{{ $user->name }}</a></td>
+                      <td>
+                        <a href="{{ url('/admin/user/' . $user->id) }}">{{ $user->name }}</a>
+                      </td>
                       <td><a href="mailto:{{$user->email}}">{{ $user->email }}</a></td>
                       <td>
                         @if(isset($user->ukm))
@@ -119,7 +121,7 @@
                       <div class="btn-group-vertical btn-block">
                         <button 
                             type="button" 
-                            class="btn btn-default btn-block"
+                            class="btn @if($user->is_admin == false) btn-success @else btn-danger @endif btn-block"
                             data-toggle="modal" 
                             data-target="#editUser"
                             data-nama="{{ $user->name }}"
@@ -127,17 +129,25 @@
                             data-id="{{ $user->id }}">
                                 Edit
                         </button>
-                        <button type="button" class="btn btn-default btn-xs  btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn @if($user->is_admin == false) btn-success @else btn-danger @endif btn-xs  btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                           <span class="caret"></span>
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                        <li>
-                          <a href="{{ url('/admin/user/' . $user->id . '/reset') }}">Reset Password</a>
-                        </li>
-                        <li>
-                          <a href="{{ url('/admin/user/' . $user->id . '/delete') }}">Delete</a>
-                        </li>
+                          <li>
+                            <a href="{{ url('/admin/user/' . $user->id . '/reset') }}">Reset Password</a>
+                          </li>
+                          <li>
+                            <a href="{{ url('/admin/user/' . $user->id . '/delete') }}">Delete</a>
+                          </li>
+                          <li>
+                            @if($user->is_admin == false) 
+                                <a href="{{ url('/admin/user/' . $user->id . '/admin') }}">Make Admin</a>
+                            @else
+                                <a href="{{ url('/admin/user/' . $user->id . '/admin') }}">Remove Admin</a>
+                            @endif 
+                            
+                          </li>
                         </ul>
                       </div>
                       </td>

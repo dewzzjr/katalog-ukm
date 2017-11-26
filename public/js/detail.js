@@ -23,7 +23,7 @@ $(document)
             });
 
         // View some images
-        viewer = new Viewer(document.getElementById('images'), {
+        viewer = new Viewer($('#images'), {
             toolbar: false,
         });
     });

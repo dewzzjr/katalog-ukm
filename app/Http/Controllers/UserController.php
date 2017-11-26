@@ -74,6 +74,15 @@ class UserController extends Controller
         // User::sendWelcomeEmail($user);
         return  redirect()->back()->with('message', 'Akun telah dihapus.');
     }
+    
+    public function setAdmin(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->is_admin = ($user->is_admin ? false : true);
+        $user->save();
+        // User::sendWelcomeEmail($user);
+        return  redirect()->back()->with('message', 'Status admin telah diubah.');
+    }
 
     public function reset(Request $request, $id)
     {

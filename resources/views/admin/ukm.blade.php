@@ -44,7 +44,7 @@
                           <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                               <label>Pemilik</label>
-                              <select name="user_id" id="user" class="form-control select2" style="width: 100%;">
+                              <select name="user_id" id="user" class="form-control select2" style="width: 100%;" required>
                               </select>
                             </div>
                             <div class="form-group">
@@ -54,23 +54,23 @@
                             </div>
                             <div class="form-group">
                               <label for="nama">Nama</label>
-                              <input name="name" type="text" class="form-control" placeholder="Masukkan Nama UKM" />
+                              <input name="name" type="text" class="form-control" placeholder="Masukkan Nama UKM" required/>
                             </div>
                             <div class="form-group">
                               <label for="description">Deskripsi</label>
-                              <input name="description" type="text" class="form-control" placeholder="Deskripsi UKM Anda (jenis produk, ciri khas, slogan)" />
+                              <input name="description" type="text" class="form-control" placeholder="Deskripsi UKM Anda (jenis produk, ciri khas, slogan)" required/>
                             </div>
                             <div class="form-group">
                               <label for="alamat">Alamat</label>
-                              <input name="alamat" type="text" class="form-control" placeholder="Masukkan Alamat" />
+                              <input name="alamat" type="text" class="form-control" placeholder="Masukkan Alamat" required/>
                             </div>
                             <div class="form-group">
                               <label for="kabupaten">Kabupaten</label>
-                              <input name="kabupaten" type="text" class="form-control" placeholder="Kabupaten" />
+                              <input name="kabupaten" type="text" class="form-control" placeholder="Kabupaten" required/>
                             </div>
                             <div class="form-group">
                               <label for="kecamatan">Kecamatan</label>
-                              <input name="kecamatan" type="text" class="form-control" placeholder="Kecamatan" />
+                              <input name="kecamatan" type="text" class="form-control" placeholder="Kecamatan" required/>
                             </div>
                           </div>
                           <div class="col-md-9 col-sm-12 mapper" >

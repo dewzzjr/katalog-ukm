@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Mail;
 
 class User extends Authenticatable
@@ -39,6 +40,12 @@ class User extends Authenticatable
     public function ukm()
     {
         return $this->hasOne('App\Ukm');
+    }
+
+    
+    public function image()
+    {
+        return DB::table('user_images')->where('user_id', $this->id);
     }
 
     public function isAdmin()
