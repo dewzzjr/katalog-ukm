@@ -66,6 +66,7 @@ class HomeController extends Controller
             'count'			=> $count,
             'cat_color' 	=> $cat['color'],
             'cat_icon' 		=> $cat['icon'],
+            'cat_id' 		=> $cat['id'],
             'address' 		=> $address,
             'alamat' 		=> $key->alamat,
             'kecamatan' 	=> $key->kecamatan,
@@ -89,6 +90,7 @@ class HomeController extends Controller
         ];
         $result['color'] =  $color[$cat->id];
         $result['icon'] = $icon[$cat->id];
+        $result['id'] = $cat->id;
         return $result;
     }
 

@@ -21,7 +21,7 @@ class AjaxController extends Controller
     {
         $query = DB::table('categories')->select('id','name');
         $query = $query->take(5)->get();
-        return $query;
+        return response()->json($query, 200);
     }
     public function getUkm(Request $request)
     {

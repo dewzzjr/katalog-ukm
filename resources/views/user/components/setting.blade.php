@@ -46,6 +46,18 @@
                             <input name="name" type="text" class="form-control" placeholder="Masukkan Nama UKM" value="{{ $data->ukm['name'] or '' }}"/>
                         </div>
                         <div class="field">
+                            <label>Kategori</label>
+                            <select name="category_id" id="category" class="ui dropdown category" value="">
+                                <option value="" >Pilih Kategori</option>
+                                <option value="1" @if($data->ukm['cat_id'] == 1) selected="selected" @endif>
+                                Handycraft dan Furniture</option>
+                                <option value="2" @if($data->ukm['cat_id'] == 2) selected="selected" @endif>
+                                Makanan Olahan</option>
+                                <option value="3" @if($data->ukm['cat_id'] == 3) selected="selected" @endif>
+                                Sentra Batik Tulis dan Garmen</option>
+                            </select>
+                        </div>
+                        <div class="field">
                             <label for="description">Deskripsi</label>
                             <input name="description" type="text" class="form-control" placeholder="Deskripsi UKM Anda (jenis produk, ciri khas, slogan)" value="{{ $data->ukm['description'] or '' }}"/>
                         </div>
@@ -80,23 +92,27 @@
         
     @push('scripts')
         <script>
+        
             
+        $('.ui.dropdown.category').dropdown();
+        
         function addMarkerListener(map) {
-          map.addListener('click', function(e) {
-              placeMarker(e.latLng, map);
-							setLatLng(e.latLng);
-          });
+            map.addListener('click', function(e) {
+                placeMarker(e.latLng, map);
+                setLatLng(e.latLng);
+            });
         }
-				function setLatLng(latLng) {
-              $('[name="latitude"]').val(latLng.lat())
-              $('[name="longitude"]').val(latLng.lng())
-              console.log(latLng.lat())
-              console.log(latLng.lng())
-				}
+				
+        function setLatLng(latLng) {
+            $('[name="latitude"]').val(latLng.lat())
+            $('[name="longitude"]').val(latLng.lng())
+            console.log(latLng.lat())
+            console.log(latLng.lng())
+		}
 
         function placeMarker(location, map) {
-            if (maps[1].markers[0] == undefined){
-                maps[1].markers[0] = new google.maps.Marker({
+            if (maps[order].markers[0] == undefined){
+                maps[order].markers[0] = new google.maps.Marker({
                     position: location,
                     map: map, 
                     animation: google.maps.Animation.DROP,
@@ -104,7 +120,7 @@
 
             }
             else{
-                maps[1].markers[0].setPosition(location);
+                maps[order].markers[0].setPosition(location);
             }
             
             map.setCenter(location);

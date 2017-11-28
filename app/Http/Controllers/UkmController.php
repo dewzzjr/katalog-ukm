@@ -85,7 +85,7 @@ class UkmController extends Controller
         $ukm->category_id = $request->input('category_id');
         $ukm->save();
         
-        $location = Ukm::location();
+        $location = $ukm->location()->first();
         $location->ukm_id = $ukm->id;
         $location->alamat = $request->input('alamat');
         $location->kabupaten = $request->input('kabupaten');

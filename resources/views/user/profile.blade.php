@@ -71,7 +71,6 @@
 @endsection 
 
 @push('scripts')
-    <script src="//cdnjs.cloudflare.com/ajax/libs/viewerjs/0.10.0/viewer.min.js "></script>
     <script>
     var order = {!! ($data->ukm == null ? 0 : 1) !!};
     $(document)

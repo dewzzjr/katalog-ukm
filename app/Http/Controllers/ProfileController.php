@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Hash;
@@ -61,6 +62,18 @@ class ProfileController extends Controller
 
     function setUkm(Request $request) 
     {
-        return $request;
+        // return $request->all();
+        $id = $request->input('user_id');
+        $user = Auth::user();
+        if( $user->id != $id ) return abort(403);
+
+        $url = null;
+        if( $request->id != null ) {
+            $url = '/admin/ukm/' . $request->id . '/edit';
+        } else {
+            $url = '/admin/ukm/add';
+        }
+        $r = Request::create($url, 'POST', $request->all());
+        return app()->handle($r);
     }
 }
