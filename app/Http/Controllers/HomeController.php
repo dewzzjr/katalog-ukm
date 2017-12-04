@@ -153,21 +153,23 @@ class HomeController extends Controller
             if($id == null) return redirect()->route('login');
         }
         $user = User::findOrFail($id);
-        $user->ukm = $user->ukm()->card()->first();
         $image = $user->image()->first();
         $user->url = ( $image != null ? 'storage/' . $image->path : 'default-profile.jpg');
+        $user->ukm = $user->ukm()->card()->first();
         if( $user->ukm != null )
         {
             $user->ukm = $this->constructCard($user->ukm, 0);
+            $user->product = $user->ukm()->first()->product();
         } else {
             Mapper::location('Blitar')->map(['marker' => false, 'eventBeforeLoad' => 'addMarkerListener(map);']);
         }
 
         if( $user->id == Auth::id() )
         {
-            Mapper::map($user->ukm['latitude'], $user->ukm['longitude'], ['marker' => true, 'eventBeforeLoad' => 'addMarkerListener(map);']);
-                    //->marker($user->ukm['latitude'], $user->ukm['longitude']);
-                    
+            Mapper::map($user->ukm['latitude'], 
+                        $user->ukm['longitude'], 
+                        ['marker' => true, 'eventBeforeLoad' => 'addMarkerListener(map);']
+                    );
         }
         // return $user;
         return view('user.profile')->with('data', $user);

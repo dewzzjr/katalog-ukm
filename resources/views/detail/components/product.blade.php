@@ -3,6 +3,9 @@
         <div class="ui active tab" data-tab="product">
             <h2 class="header">Daftar Produk</h2>
             <div class="ui items">
+                @if($data->count == 0)
+                    <p>NO PRODUCT YET</p>
+                @endif
                 @foreach($data->product as $item)
                 <div class="item">
                     <div class="ui small image">

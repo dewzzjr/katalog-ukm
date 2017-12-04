@@ -32,7 +32,12 @@ class UkmController extends Controller
             'alamat'	    =>  'required|max:255',
             'kabupaten'	    =>  'required|max:255',
             'kecamatan'     =>  'required|max:255',
+        ],
+        [
+            'longitude.required' => 'Map is not set',
+            'latitude.required'  => 'Map is not set'
         ]);
+
         // If validator fails, short circut and redirect with errors
         if($validator->fails()){
             return back()
@@ -55,7 +60,7 @@ class UkmController extends Controller
         $location->latitude = $request->input('latitude');
         $location->longitude = $request->input('longitude');
         $location->save();
-        return  redirect()->back()->with('message', 'UKM telah dibuat.');
+        return redirect()->back()->with('message', 'UKM telah dibuat.');
     }
 
     public function update(Request $request, $id)
@@ -70,7 +75,12 @@ class UkmController extends Controller
             'alamat'	    =>  'required|max:255',
             'kabupaten'	    =>  'required|max:255',
             'kecamatan'     =>  'required|max:255',
+        ],
+        [
+            'longitude.required' => 'Map is not set',
+            'latitude.required'  => 'Map is not set'
         ]);
+
         // If validator fails, short circut and redirect with errors
         if($validator->fails()){
             return back()

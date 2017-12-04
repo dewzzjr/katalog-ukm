@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ui bottom attached segment ">
+                    <div class="ui attached segment ">
                         <div class="ui fluid">
                             <div class="content mapper">
                                 {!! Mapper::render( ($data->ukm == null ? 0 : 1) ) !!}
@@ -87,6 +87,72 @@
                         </button>
                     </div>
                 </form>
+                <div class="ui attached segment ">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                            <th>Start date</th>
+                            <th>Salary</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                            <th>Start date</th>
+                            <th>Salary</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach( $products as $product )
+                            <tr>
+                            <td><a href="{{ url('/admin/product/' . $product->id) }}">{{ $product->name }}</a></td>
+                            <td>
+                                @if(isset($product->ukm))
+                                <a href="{{ url('/admin/ukm/' . $product->ukm->id) }}">
+                                {{ $product->ukm->name }}
+                                </a>
+                                @endif
+                            </td>
+                            <td>{{ $product->description }}</td>
+                            <td>{{ $product->money }}</td>
+                            
+                            <td>
+                            <div class="btn-group-vertical btn-block">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-default btn-block"
+                                    data-toggle="modal" 
+                                    data-target="#editProduct"
+                                    data-nama="{{ $product->name }}"
+                                    data-price="{{ $product->price }}"
+                                    data-ukm="{{ $product->ukm_id }}"
+                                    data-ukmname="{{ $product->ukm->name }}"
+                                    data-description="{{ $product->description }}"
+                                    data-id="{{ $product->id }}">
+                                        Edit
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs  btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                <li>
+                                <a href="{{ url('/admin/product/' . $product->id . '/delete') }}">Delete</a>
+                                </li>
+                                </ul>
+                            </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </div>
             </div>
         </div>
         

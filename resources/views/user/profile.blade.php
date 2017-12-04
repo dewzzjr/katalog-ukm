@@ -71,6 +71,8 @@
 @endsection 
 
 @push('scripts')
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
     <script>
     var order = {!! ($data->ukm == null ? 0 : 1) !!};
     $(document)
