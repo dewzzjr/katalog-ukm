@@ -159,9 +159,9 @@ class HomeController extends Controller
         if( $user->ukm != null )
         {
             $user->ukm = $this->constructCard($user->ukm, 0);
-            $user->product = $user->ukm()->first()->product();
+            $user->product = $user->ukm()->first()->product()->get();
         } else {
-            Mapper::location('Blitar')->map(['marker' => false, 'eventBeforeLoad' => 'addMarkerListener(map);']);
+            Mapper::location('blitar')->map(['marker' => false, 'eventBeforeLoad' => 'addMarkerListener(map);']);
         }
 
         if( $user->id == Auth::id() )

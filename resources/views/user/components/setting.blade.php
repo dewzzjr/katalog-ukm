@@ -88,6 +88,8 @@
                     </div>
                 </form>
                 <div class="ui attached segment ">
+
+                    @if($data->product != null)
                     <table id="example" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
@@ -110,8 +112,8 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach( $products as $product )
-                            <tr>
+                        @foreach( $data->product as $product )
+                        <tr>
                             <td><a href="{{ url('/admin/product/' . $product->id) }}">{{ $product->name }}</a></td>
                             <td>
                                 @if(isset($product->ukm))
@@ -151,7 +153,14 @@
                             </td>
                         </tr>
                         @endforeach
+                        
                     </tbody>
+                    </table>
+                    @else
+                    
+                    <p> NO PRODUCT YET</p>
+                    
+                    @endif
                 </div>
             </div>
         </div>
