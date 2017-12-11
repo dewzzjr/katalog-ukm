@@ -9,8 +9,10 @@
 @section('content')
 @include('layouts.nav')
 @include('layouts.search')
-<div id="main" class="ui vertical stripe segment">
-	<div class="ui container">
+	<div id="main"class="ui container">
+	@if($ukm->total() == 0)
+		<h1>TIDAK DITEMUKAN</h1>
+	@else
 		<div class="ui vertical segment centered grid">
 		{{ $ukm->links() }}
 		</div>
@@ -23,8 +25,8 @@
 		<div class="ui vertical segment centered grid">
 		{{ $ukm->links() }}
 		</div>
+	@endif
 	</div>
-</div>
 @include('layouts.footer')
 @endsection 
 

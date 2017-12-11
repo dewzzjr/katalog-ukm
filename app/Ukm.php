@@ -55,6 +55,19 @@ class Ukm extends Model
         return DB::table('ukm_details')->where('ukm_id', $this->id )->where('type', 'telepon');
     }
 
+    public function scopeSearch( $query, $value )
+    {
+        return $query
+        ->where('ukm.name', 'LIKE', '%' . $value . '%')
+        ->orWhere('description', 'LIKE', '%' . $value . '%');
+    }
+
+    public function scopeCategory( $query, $value )
+    {
+        return $query
+        ->orWhere('category_id', $value);
+    }
+
     public function scopeCard( $query )
     {
         return $query

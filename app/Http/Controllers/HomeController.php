@@ -31,19 +31,46 @@ class HomeController extends Controller
      */
     public function home(Request $req)
     {
+        $type = $req->input('type', 'ukm');
+        
+        if($type == 'product') 
+            $data = Product::card();
+        else 
+            $data = Ukm::card();
 
-        $data = Ukm::card();
+        if($req->input('category'))
+        {
+            $category = $req->input('category');
+            foreach ($req->input('category') as $i=>$cat)
+            {
+                if($i == 0)
+                {
+                    $data
+                    ->where('category_id', $cat);
+                }
+                $data->category($cat);
+            }
+            $search['category'] = $category;
+        }
+
+        if($req->input('query'))
+        {
+            $query = $req->input('query');
+            $data->search($query);
+            $search['query'] = $query;
+        }
+
         $data = $data->orderBy('name', 'asc');
         $data = $data->paginate(8);
-        // $data = $data->get();
+        
         $result = array();
-        $i = 0;
-        foreach ($data as $key) {
+        // $i = 0;
+        foreach ($data as $i=>$key) {
             array_push($result, $this->constructCard($key, $i));
-            $i++;
+            // $i++;x
         }
         $data->data = $result;
-        
+        $data->appends($search);
         // return $data;
         return view('home')->with('ukm', $data);
     }
