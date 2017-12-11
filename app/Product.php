@@ -23,6 +23,16 @@ class Product extends Model
         return '';
     }
 
+    public function deleteImage ()
+    {
+        $images = DB::table('product_images')->where('product_id', $this->id )->get();
+        foreach($images as $image)
+        {
+            Storage::disk('local')->delete($image->path);
+        }
+        DB::table('product_images')->where('product_id', $this->id )->delete();
+    }
+
     public function getMoneyAttribute()
     {
         return sprintf('Rp %s', number_format((float) $this->price , 2 , ',' , '.'));

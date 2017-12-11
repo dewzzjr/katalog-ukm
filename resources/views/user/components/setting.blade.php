@@ -76,7 +76,7 @@
                                     <i class="edit icon"></i>
                                 </button>
                                 <button class="ui button" data-tooltip="Upload Gambar"><i class="upload icon"></i></button>
-                                <button class="ui button" data-tooltip="Hapus Produk"><i class="delete icon"></i></button>
+                                <a href="{{ url('/admin/product') . '/' . $product->id . '/delete' }}" class="ui button" data-tooltip="Hapus Produk"><i class="delete icon"></i></a>
                             </div>
                             </td>
                         </tr>
@@ -154,15 +154,22 @@
                 </form>
 
                 <!-- Modal Tambah Produk -->
-                <form method="POST" id="formModal" action="{{ url('admin/product/add') }}">
-                <div class="ui modal form">
-                    {!! csrf_field() !!}
-                    <input type="hidden" name="id" id="idProduk">
+                
+                <div class="ui modal">
                     <i class="close icon"></i>
                     <div class="header">
                         Tambah Produk
                     </div>
                     <div class="content">
+                    
+                    <form method="POST" class="ui form" id="formModal" action="{{ url('admin/product/add') }}">
+                        {!! csrf_field() !!}
+                        <input type="hidden" name="id" id="idProduk">
+                        @if($data->ukm != null)
+
+                            <input name="ukm_id" type="hidden" value="{{ $data->ukm['id'] }}"/>
+                        @endif
+
                         <label for="nama">Nama</label>
                         <div class="field">
                             <input type="text" class="form-control" name="name" id="addNama" placeholder="Masukkan Nama">
@@ -178,15 +185,15 @@
                                 <input type="number" class="form-control" name="price" id="addHarga" placeholder="Harga Produk per Pembelian">
                             </div>
                         </div>
+                        </form>
                     </div>
                     <div class="actions">
-                        <button type="submit" class="ui positive right labeled icon button">
+                        <button type="submit" form="formModal" class="ui positive right labeled icon button">
                             Submit
                             <i class="checkmark icon"></i>
                         </button>
                     </div>
                 </div>
-                </form>
             </div>
         </div>
         
@@ -199,7 +206,8 @@
             $('#addNama').val($(this).attr('data-nama'));
             $('#addDescription').val($(this).attr('data-description'));
             $('#addHarga').val($(this).attr('data-price'));
-            $('#idProduk').val($(this).attr('data-id'));  
+            $('#idProduk').val($(this).attr('data-id'));
+            var url = '{{ url("admin/product") }}/' + $(this).attr('data-id') + '/edit'  
             $('#formModal').attr('action', url);
             modal.modal('show');
         });
@@ -210,7 +218,7 @@
             $('#addDescription').val('');
             $('#addHarga').val('');
             $('#idProduk').val('');
-            $('#formModal').attr('action', '{{ url('admin/product/add') }}');
+            $('#formModal').attr('action', '{{ url("admin/product/add") }}');
             modal.modal('show');
         });
 

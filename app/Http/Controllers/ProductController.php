@@ -73,13 +73,8 @@ class ProductController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $product = Ukm::findOrFail($id);
-        $locations = $product->location();
-        if ($locations != null) {
-            foreach ($locations as $location) {
-                $location->delete();
-            }
-        }
+        $product = Product::findOrFail($id);
+        $product->deleteImage();
         $product->delete();
         return  redirect()->back()->with('message', 'Produk telah dihapus.');
     }

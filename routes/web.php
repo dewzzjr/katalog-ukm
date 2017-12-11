@@ -38,10 +38,10 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin/user/{id}/delete', 'UserController@delete');
         Route::get('/admin/user/{id}/admin', 'UserController@setAdmin');
-        Route::get('/admin/ukm/{id}/delete', 'UkmController@delete');
-        Route::get('/admin/product/{id}/delete', 'ProductController@delete');
-        Route::get('/admin/image/{type}/{id}/delete', 'ImageController@delete');
     });
+    Route::get('/admin/ukm/{id}/delete', 'UkmController@delete');
+    Route::get('/admin/product/{id}/delete', 'ProductController@delete');
+    Route::get('/admin/image/{type}/{id}/delete', 'ImageController@delete');
 });
 
 Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
