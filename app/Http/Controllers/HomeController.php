@@ -70,7 +70,7 @@ class HomeController extends Controller
             // $i++;x
         }
         $data->data = $result;
-        $data->appends($search);
+        if(isset($search)) $data->appends($search);
         // return $data;
         return view('home')->with('ukm', $data);
     }
