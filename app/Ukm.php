@@ -29,9 +29,20 @@ class Ukm extends Model
         return DB::table('ukm_details')->where('ukm_id', $this->id );
     }
 
-    public function image()
+    public function imageUkm()
     {
         return DB::table('ukm_images')->where('ukm_id', $this->id );
+    }
+
+    public function imageProduct()
+    {
+        $query = DB::table('product_images');
+        $products = $this->product()->get();
+        foreach($products as $product)
+        {
+            $query->where('product_id', $product->id );
+        }
+        return $query;
     }
 
     public function location()

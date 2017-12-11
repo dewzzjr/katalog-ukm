@@ -24,11 +24,74 @@
                             <label for="newpassword">Konfirmasi Password Baru</label>
                             <input name="newpassword_confirmation" type="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah password"/>
                         </div>
-                        <button type="submit" class="ui fluid primary button">
-                                <i class="users icon"></i> Submit
+                        <button type="submit" class="ui fluid positive labeled icon button">
+                            <i class="checkmark icon"></i> Submit
                         </button>
                     </form>
                 </div>
+                @if( isset($data->ukm) )
+
+                <h2 class="ui attached header">
+                    <i class="cart icon "></i> Produk
+                </h2>
+                <div class="ui attached segment">
+                    <button class="ui positive right labeled icon button add">
+                        Tambah Produk
+                        <i class="plus icon"></i>
+                    </button>
+                    @if( sizeof($data->product) > 0)
+
+                    <table id="daftarProduk" class="ui celled table">
+                    <tfoot>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Deskripsi</th>
+                            <th>Harga</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Deskripsi</th>
+                            <th>Harga</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach( $data->product as $product )
+
+                        <tr>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->description }}</td>
+                            <td>{{ $product->money }}</td>
+                            
+                            <td>
+                            <div class="ui small basic icon buttons">
+                                <button class="ui button edit" data-tooltip="Edit Produk"
+                                    data-nama="{{ $product->name }}"
+                                    data-price="{{ $product->price }}"
+                                    data-description="{{ $product->description }}"
+                                    data-id="{{ $product->id }}">
+                                    <i class="edit icon"></i>
+                                </button>
+                                <button class="ui button" data-tooltip="Upload Gambar"><i class="upload icon"></i></button>
+                                <button class="ui button" data-tooltip="Hapus Produk"><i class="delete icon"></i></button>
+                            </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        
+                    </tbody>
+                    </table>
+                    @else
+                    
+                    <p> NO PRODUCT YET</p>
+                    @endif
+
+                </div>
+                @endif
+
                 <form class="ui form" action="{{ url('user/ukm') }}" method="POST">
                     {!! csrf_field() !!}
                     <h2 class="ui attached header">
@@ -37,8 +100,10 @@
                     <div class="ui attached segment">
                         <input name="user_id" type="hidden" value="{{ $data->id }}"/>
                         @if($data->ukm != null)
+
                             <input name="id" type="hidden" value="{{ $data->ukm['id'] }}"/>
                         @endif
+
                         <input name="latitude" type="hidden" value="{{ $data->ukm['latitude'] or '' }}"/>
                         <input name="longitude" type="hidden" value="{{ $data->ukm['longitude'] or '' }}"/>
                         <div class="field">
@@ -82,93 +147,73 @@
                                 {!! Mapper::render( ($data->ukm == null ? 0 : 1) ) !!}
                             </div>
                         </div>
-                        <button type="submit" class="ui fluid primary button">
-                                <i class="users icon"></i> Submit
+                        <button type="submit" class="ui attached bottom fluid positive labeled icon button">
+                            <i class="checkmark icon"></i> Submit
                         </button>
                     </div>
                 </form>
-                <div class="ui attached segment ">
 
-                    @if($data->product != null)
-                    <table id="example" class="display" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        @foreach( $data->product as $product )
-                        <tr>
-                            <td><a href="{{ url('/admin/product/' . $product->id) }}">{{ $product->name }}</a></td>
-                            <td>
-                                @if(isset($product->ukm))
-                                <a href="{{ url('/admin/ukm/' . $product->ukm->id) }}">
-                                {{ $product->ukm->name }}
-                                </a>
-                                @endif
-                            </td>
-                            <td>{{ $product->description }}</td>
-                            <td>{{ $product->money }}</td>
-                            
-                            <td>
-                            <div class="btn-group-vertical btn-block">
-                                <button 
-                                    type="button" 
-                                    class="btn btn-default btn-block"
-                                    data-toggle="modal" 
-                                    data-target="#editProduct"
-                                    data-nama="{{ $product->name }}"
-                                    data-price="{{ $product->price }}"
-                                    data-ukm="{{ $product->ukm_id }}"
-                                    data-ukmname="{{ $product->ukm->name }}"
-                                    data-description="{{ $product->description }}"
-                                    data-id="{{ $product->id }}">
-                                        Edit
-                                </button>
-                                <button type="button" class="btn btn-default btn-xs  btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                <li>
-                                <a href="{{ url('/admin/product/' . $product->id . '/delete') }}">Delete</a>
-                                </li>
-                                </ul>
+                <!-- Modal Tambah Produk -->
+                <form method="POST" id="formModal" action="{{ url('admin/product/add') }}">
+                <div class="ui modal form">
+                    {!! csrf_field() !!}
+                    <input type="hidden" name="id" id="idProduk">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        Tambah Produk
+                    </div>
+                    <div class="content">
+                        <label for="nama">Nama</label>
+                        <div class="field">
+                            <input type="text" class="form-control" name="name" id="addNama" placeholder="Masukkan Nama">
+                        </div>
+                        <label for="description">Deskripsi</label>
+                        <div class="field">
+                            <input type="text" class="form-control" name="description" id="addDescription" placeholder="Deskripsi Produk Anda">
+                        </div>
+                        <label for="harga">Harga</label>
+                        <div class="field">
+                            <div class="ui labeled input">
+                                <span class="ui label">Rp</span>
+                                <input type="number" class="form-control" name="price" id="addHarga" placeholder="Harga Produk per Pembelian">
                             </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                        
-                    </tbody>
-                    </table>
-                    @else
-                    
-                    <p> NO PRODUCT YET</p>
-                    
-                    @endif
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="ui positive right labeled icon button">
+                            Submit
+                            <i class="checkmark icon"></i>
+                        </button>
+                    </div>
                 </div>
+                </form>
             </div>
         </div>
         
     @push('scripts')
+
         <script>
         
-            
+        $( '.ui.button.edit').click(function () {
+            var modal = $('.ui.modal');
+            $('#addNama').val($(this).attr('data-nama'));
+            $('#addDescription').val($(this).attr('data-description'));
+            $('#addHarga').val($(this).attr('data-price'));
+            $('#idProduk').val($(this).attr('data-id'));  
+            $('#formModal').attr('action', url);
+            modal.modal('show');
+        });
+
+        $( '.ui.button.add').click(function () {
+            var modal = $('.ui.modal');
+            $('#addNama').val('');
+            $('#addDescription').val('');
+            $('#addHarga').val('');
+            $('#idProduk').val('');
+            $('#formModal').attr('action', '{{ url('admin/product/add') }}');
+            modal.modal('show');
+        });
+
         $('.ui.dropdown.category').dropdown();
         
         function addMarkerListener(map) {

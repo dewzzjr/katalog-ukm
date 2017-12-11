@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -14,7 +15,12 @@ class Product extends Model
 
     public function image()
     {
-        return DB::table('product_images')->where('ukm_id', $this->id );
+        $image = DB::table('product_images')->where('product_id', $this->id )->value('path');
+        if(isset($image))
+        {
+            return 'storage/' . $image;
+        } else 
+        return '';
     }
 
     public function getMoneyAttribute()

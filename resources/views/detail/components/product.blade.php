@@ -3,13 +3,22 @@
         <div class="ui active tab" data-tab="product">
             <h2 class="header">Daftar Produk</h2>
             <div class="ui items">
-                @if($data->count == 0)
-                    <p>NO PRODUCT YET</p>
+                @if(sizeof($data->product) == 0)
+
+                    <p>BELUM ADA PRODUK</p>
                 @endif
                 @foreach($data->product as $item)
+
                 <div class="item">
                     <div class="ui small image">
+                    @if($item->image() == null)
+
                         <img src="{{ url('noimage.png') }}">
+                    @else
+
+                        <img src="{{ asset($item->image()) }}">
+                    @endif
+
                     </div>
                     <div class="content">
                         <div class="header">{{ $item->name }}</div>
@@ -22,5 +31,6 @@
                     </div>
                 </div>
                 @endforeach
+
             </div>
         </div>

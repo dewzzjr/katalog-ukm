@@ -11,11 +11,17 @@
 @include('layouts.search')
 <div id="main" class="ui vertical stripe segment">
 	<div class="ui container">
-		<div class="ui link four stackable doubling cards">
-		@foreach ($data as $card)
+		<div class="ui vertical segment centered grid">
+		{{ $ukm->links() }}
+		</div>
+		<div class="ui vertical segment link four stackable doubling cards">
+		@foreach ($ukm->data as $card)
 			@component('layouts.card', $card)
 			@endcomponent
 		@endforeach
+		</div>
+		<div class="ui vertical segment centered grid">
+		{{ $ukm->links() }}
 		</div>
 	</div>
 </div>

@@ -9,6 +9,7 @@ use App\User;
 use App\Category;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Cornford\Googlmapper\MapperServiceProvider;
+// use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -33,17 +34,18 @@ class HomeController extends Controller
 
         $data = Ukm::card();
         $data = $data->orderBy('name', 'asc');
-        $data = $data->skip(0)->take(8);
-        $data = $data->get();
+        $data = $data->paginate(8);
+        // $data = $data->get();
         $result = array();
         $i = 0;
         foreach ($data as $key) {
             array_push($result, $this->constructCard($key, $i));
             $i++;
         }
+        $data->data = $result;
         
         // return $data;
-        return view('home')->with('data', $result);
+        return view('home')->with('ukm', $data);
     }
 
     private function constructCard($key, $order) {
@@ -104,10 +106,10 @@ class HomeController extends Controller
         $owner = $ukm->owner()->first();
         $contact = $ukm->detail()->get();
         $product = $ukm->product()->get();
-        $image = $ukm->image()->get();
+        // var_dump($ukm->imageUkm()->get());die();
+        $image = array_merge($ukm->imageUkm()->get()->toArray(), $ukm->imageProduct()->get()->toArray());
         $phone = $ukm->phone()->first();
         $location = $ukm->location()->first();
-
         $ukm['category'] = $category;
         $ukm['owner'] = $owner;
         $ukm['address'] = $this->getAddress($location);
