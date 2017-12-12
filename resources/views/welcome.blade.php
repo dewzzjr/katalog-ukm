@@ -223,7 +223,7 @@
     <!-- Footer -->
     <div class="ui inverted vertical footer segment">
         <div class="ui text container">
-            @copyright Dewangga Prasetya Praja 2017
+            @copyright IKM Blitar 2017
         </div>
     </div>
     <!-- Semantic JavaScript -->
