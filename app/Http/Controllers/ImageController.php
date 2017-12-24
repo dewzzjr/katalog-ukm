@@ -41,15 +41,15 @@ class ImageController extends Controller
         }
         
         if($request->input('user_id') !== null) {
-            $this->doUpload(
+            $this->_doUpload(
                 'user',
                 $request->input('user_id'),
-                $request->input('description'),
+                "Gambar Profil",
                 $request->file('image')
             );
         } else 
         if ($request->input('ukm_id') !== null) {
-            $this->doUpload(
+            $this->_doUpload(
                 'ukm',
                 $request->input('ukm_id'),
                 $request->input('description'),
@@ -57,7 +57,7 @@ class ImageController extends Controller
             );
         } else 
         if ($request->input('product_id') !== null) {
-            $this->doUpload(
+            $this->_doUpload(
                 'product',
                 $request->input('product_id'),
                 $request->input('description'),
@@ -68,7 +68,7 @@ class ImageController extends Controller
         return redirect()->back()->with('message','Image Upload successful');
     }
 
-    private function doUpload($type, $id, $description, $file) {
+    private function _doUpload($type, $id, $description, $file) {
         $path = Storage::disk('public')->putFile($type . '/' . $id, $file);
         $id = DB::table($type . '_images')->insertGetId(
             [
@@ -78,5 +78,44 @@ class ImageController extends Controller
                 'ext'           => $file->getClientOriginalExtension(),
             ]
         );
+    }
+
+    public function delete(Request $request, $type, $id)
+    {
+
+    }
+
+    public function description(Request $request, $type, $id)
+    {
+        $rule = [];
+        if($request->input('user_id') !== null) {
+            $rule['user_id'] = 'required|exists:users,id';
+        } else 
+        if ($request->input('ukm_id') !== null) {
+            $rule['ukm_id'] = 'required|exists:ukm,id';
+        } else 
+        if ($request->input('product_id') !== null) {
+            $rule['product_id'] = 'required|exists:products,id';
+        } else {
+            $rule['user_id'] = 'required|exists:users,id';
+            $rule['ukm_id'] = 'required|exists:ukm,id';
+            $rule['product_id'] = 'required|exists:products,id';
+        }
+
+        $rule['description'] =	'required';
+
+        // var_dump($rule);die();
+        $validator = Validator::make($request->all(), $rule);
+
+        // If validator fails, short circut and redirect with errors
+        if($validator->fails()){
+            return back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        
+        DB::table($type . '_images')->where('id', $id)->update($request->all());
+        return redirect()->back()->with('message','Deskripsi sudah diubah');
+
     }
 }

@@ -2,6 +2,8 @@
         <!-- Contact -->
         <div class="ui tab" data-tab="contact">
             <h2 class="header">Alamat dan Kontak</h2>
+            <a class="ui button primary" href="{{ url('profile/'.$data->owner->id) }}">Lihat Pemilik<i class="chevron right icon"></i></a>
+            <h2 class="header">Alamat dan Kontak</h2>
             <div class="ui two column grid">
                 <div class="column">
                     <div class="ui list link">

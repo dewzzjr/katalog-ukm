@@ -28,7 +28,7 @@ class Product extends Model
         $images = DB::table('product_images')->where('product_id', $this->id )->get();
         foreach($images as $image)
         {
-            Storage::disk('local')->delete($image->path);
+            Storage::disk('public')->delete($image->path);
         }
         DB::table('product_images')->where('product_id', $this->id )->delete();
     }

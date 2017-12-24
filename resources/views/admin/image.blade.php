@@ -32,55 +32,56 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="box" id="ukm-box" >
-							<form enctype="multipart/form-data" method="POST" action="{{ url('admin/image/add') }}">
-							{{ csrf_field() }}
-							<div class="box-header">
-								<h4 class="title" id="title-ukm">Upload Gambar</h4>
-							</div>
-							<div class="box-body">
-									<div class="row">
-										<div class="col-md-6 col-sm-12">
-											<div class="form-group">
-													<label>
-															<input type="radio" value="user" name="type" class="minimal" checked/>
-															User&emsp;&emsp;&emsp;
-													</label>
-													<label>
-															<input type="radio" value="ukm" name="type" class="minimal"/>
-															UKM&emsp;&emsp;&emsp;
-													</label>
-													<label>
-															<input type="radio" value="product" name="type" class="minimal"/>
-															Product&emsp;&emsp;&emsp;
-													</label>
-											</div>
-											<div class="form-group">
-												<label id="type-label"></label>
-												<select name="" id="type" class="form-control select2" style="width: 100%;">
-												</select>
-											</div>
-											<div class="form-group">
-													<label for="description">Deskripsi</label>
-													<input class="form-control" name="description" id="description" type="text" placeholder="Masukkan deskripsi gambar">
-											</div>
-											<div class="form-group">
-													<label for="imageInput">File input</label>
-													<input data-preview="#preview" name="image" type="file" id="imageInput">
-													<img class="col-sm-6" id="preview"  src=""></img>
-													<p class="help-block">Example block-level help text here.</p>
-											</div>
-										</div>
-										<div class="col-md-6 col-sm-12 mapper" >
-											{{--  {!! Mapper::render() !!}  --}}
-										</div>
-									</div>
-							</div>
-							<div class="box-footer">
-									<div class="form-group">
-											<button class="form-control" class="btn btn-primary btn-block" name="Upload" type="submit">Upload</button>    
-									</div>
-							</div>
-							</form>
+                <form enctype="multipart/form-data" method="POST" action="{{ url('admin/image/add') }}">
+                {{ csrf_field() }}
+                <div class="box-header">
+                    <h4 class="title" id="title-ukm">Upload Gambar</h4>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" value="user" name="type" class="minimal" checked/>
+                                    User&emsp;&emsp;&emsp;
+                                </label>
+                                <label>
+                                    <input type="radio" value="ukm" name="type" class="minimal"/>
+                                    UKM&emsp;&emsp;&emsp;
+                                </label>
+                                <label>
+                                    <input type="radio" value="product" name="type" class="minimal"/>
+                                    Product&emsp;&emsp;&emsp;
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label id="type-label"></label>
+                                <select name="" id="type" class="form-control select2" style="width: 100%;">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Deskripsi</label>
+                                <input class="form-control" name="description" id="description" type="text" placeholder="Masukkan deskripsi gambar">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 mapper" >
+                            <div class="form-group">
+                                    <label for="imageInput">File input</label>
+                                    <input data-preview="#preview" name="image" type="file" id="imageInput">
+                                    
+                                    <p class="help-block">
+                                    <img class="col-sm-6" id="preview"  src="{{ url('noimage.png')}}"></img>
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="form-group">
+                        <button class="form-control" class="btn btn-primary btn-block" name="Upload" type="submit">Upload</button>    
+                    </div>
+                </div>
+                </form>
             </div>
           </div>
         </div>
@@ -274,6 +275,7 @@
 
         function initSelect(id, name) {
             $('#type-label').html(name);
+            $('select.form-control.select2').val("");
             $('#type').select2({
                 minimumInputLength: 2,
                 placeholder: 'Masukkan Nama ' + name,
