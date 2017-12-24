@@ -94,6 +94,14 @@
             <!-- /.box-header -->
             <div class="box-body">
               <table id="image-list" class="table table-bordered table-hover">
+                <tfoot>
+                <tr>
+                  <th>Link Gambar</th>
+                  <th>Deskripsi</th>
+                  <th>Sumber</th>
+                  <th>Action</th>
+                </tr>
+                </tfoot>
                 <thead>
                 <tr>
                   <th>Link Gambar</th>
@@ -107,7 +115,10 @@
                     <tr>
                         <td><a href="{{ url($image->path) }}">{{ $image->path }}</a></td>
                         <td>{{ $image->description }}</td>
-                        <td>UKM</td>
+                        <td>
+                            <a href="{{ url('admin/ukm') }}">UKM</a>: {{ $image->ukm_id}} <br />
+                            Pengguna: {{ $image->user_id }}
+                        </td>
                         <td>
                         <div class="btn-group-vertical btn-block">
                             <button 
@@ -137,7 +148,7 @@
                     <tr>
                         <td><a href="{{ url($image->path) }}">{{ $image->path }}</a></td>
                         <td>{{ $image->description }}</td>
-                        <td>Pengguna</td>
+                        <td><a href="{{ url('admin/user') }}">Pengguna</a>: {{ $image->user_id }}</td>
                         <td>
                         <div class="btn-group-vertical btn-block">
                             <button 
@@ -167,7 +178,11 @@
                     <tr>
                         <td><a href="{{ url($image->path) }}">{{ $image->path }}</a></td>
                         <td>{{ $image->description }}</td>
-                        <td>Produk</td>
+                        <td>
+                            <a href="{{ url('admin/product') }}">Produk</a>: {{ $image->product_id }} <br/>
+                            UKM: {{ $image->ukm_id }} <br/>
+                            Pengguna: {{ $image->user_id }}
+                        </td>
                         <td>
                         <div class="btn-group-vertical btn-block">
                             <button 
@@ -194,14 +209,6 @@
                     </tr>
                 @endforeach
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>Link Gambar</th>
-                  <th>Deskripsi</th>
-                  <th>Tipe</th>
-                  <th>Action</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
