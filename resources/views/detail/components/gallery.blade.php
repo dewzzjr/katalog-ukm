@@ -11,7 +11,7 @@
             @foreach($data->gallery as $key=>$image)
             
                 <a href="#" onclick="viewer.view({{$key}})">
-                    <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $image->description }}">
+                    <img src="{{ asset('storage/' . $image['path']) }}" alt="{{ $image['description'] }}">
                 </a>
             @endforeach
             

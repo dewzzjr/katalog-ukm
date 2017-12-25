@@ -17,10 +17,17 @@
 		{{ $ukm->links() }}
 		</div>
 		<div class="ui vertical segment link four stackable doubling cards">
+		@if(Request::get('type') != 'product')
 		@foreach ($ukm->data as $card)
-			@component('layouts.card', $card)
+			@component('layouts.card.ukm', $card)
 			@endcomponent
 		@endforeach
+		@else
+		@foreach ($ukm->data as $card)
+			@component('layouts.card.product', $card)
+			@endcomponent
+		@endforeach
+		@endif
 		</div>
 		<div class="ui vertical segment centered grid">
 		{{ $ukm->links() }}

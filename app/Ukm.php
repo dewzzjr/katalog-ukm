@@ -29,20 +29,46 @@ class Ukm extends Model
         return DB::table('ukm_details')->where('ukm_id', $this->id );
     }
 
-    public function imageUkm()
+    public function scopeImageUkm( $query )
     {
-        return DB::table('ukm_images')->where('ukm_id', $this->id );
+        return $query 
+        ->join('ukm_images', 'ukm.id', '=', 'ukm_images.ukm_id')
+        ->where('ukm_id', $this->id )
+        ->select(
+            'ukm_images.id as id', 
+            'ukm.id as ukm_id', 
+            'ukm.name as ukm_name',
+            'ukm_images.description as description',
+            'path'
+        );
     }
 
-    public function imageProduct()
+    public function scopeImageProduct( $query )
     {
-        $query = DB::table('product_images');
-        $products = $this->product()->get();
-        foreach($products as $product)
+        return $query 
+        ->join('products', 'ukm.id', '=', 'products.ukm_id')
+        ->join('product_images', 'products.id', '=', 'product_images.product_id')
+        ->where('ukm_id', $this->id )
+        ->select(
+            'product_images.id as id', 
+            'ukm.id as ukm_id', 
+            'products.id as product_id', 
+            'ukm.name as ukm_name',
+            'products.name as product_name',
+            'product_images.description as description',
+            'path'
+        );
+    }
+
+    
+    public function deleteImage ()
+    {
+        $images = DB::table('ukm_images')->where('ukm_id', $this->id )->get();
+        foreach($images as $image)
         {
-            $query->where('product_id', $product->id );
+            Storage::disk('public')->delete($image->path);
         }
-        return $query;
+        DB::table('ukm_images')->where('ukm_id', $this->id )->delete();
     }
 
     public function location()

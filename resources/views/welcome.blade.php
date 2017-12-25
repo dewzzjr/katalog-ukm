@@ -179,6 +179,12 @@
                     <div class="ui left icon action input">
                         <i class="search icon"></i>
                         <input name="query" type="text" placeholder="Kata Kunci">
+                        <select name="category[]" multiple="" class="ui compact selection dropdown">
+                            <option value="">Pilih Kategori</option>
+                            <option value="1">Kerajinan</option>
+                            <option value="2">Makanan</option>
+                            <option value="3">Pakaian</option>
+                        </select>
                         <button class="ui blue submit button">Cari</button>
                     </div>
                 </form>

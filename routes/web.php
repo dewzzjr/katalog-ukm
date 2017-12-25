@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/admin/ukm/add', 'UkmController@create');
     Route::post('/admin/ukm/{id}/edit', 'UkmController@update');
+    Route::post('/admin/ukm/{id}/detail', 'UkmController@detail');
     
     Route::post('/admin/product/add', 'ProductController@create');
     Route::post('/admin/product/{id}/edit', 'ProductController@update');

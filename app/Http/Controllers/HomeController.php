@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Ukm;
 use App\User;
+use App\Product;
 use App\Category;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Cornford\Googlmapper\MapperServiceProvider;
@@ -60,14 +61,25 @@ class HomeController extends Controller
             $search['query'] = $query;
         }
 
+        if($req->input('type') == 'product')
+        {
+            $search['type'] = 'product';
+        }
+
         $data = $data->orderBy('name', 'asc');
         $data = $data->paginate(8);
         
         $result = array();
-        // $i = 0;
-        foreach ($data as $i=>$key) {
-            array_push($result, $this->constructCard($key, $i));
-            // $i++;x
+        if($req->input('type') != 'product')
+        {
+            foreach ($data as $i=>$key) {
+                array_push($result, $this->constructUkm($key, $i));
+            }
+        } else
+        {
+            foreach ($data as $i=>$key) {
+                array_push($result, $this->constructProduct($key));
+            }
         }
         $data->data = $result;
         if(isset($search)) $data->appends($search);
@@ -75,16 +87,40 @@ class HomeController extends Controller
         return view('home')->with('ukm', $data);
     }
 
-    private function constructCard($key, $order) {
-        $count = Ukm::find($key->id)->product()->count();
+    private function constructProduct($key)
+    {
+        $product = Product::find($key->id);
+        $cat = $this->getCategory($key->category);
+        $image = $product->image();
+        $result = [
+            'id'            => $key->id,
+            'ukm_id'        => $key->ukm_id,
+            'ukm_name'      => $key->ukm_name,
+            'name' 			=> $key->name,
+            'money'         => $key->money,
+            'description' 	=> $key->description,
+            'category' 		=> $key->category,
+            'cat_color' 	=> $cat['color'],
+            'cat_icon' 		=> $cat['icon'],
+            'cat_id' 		=> $cat['id'],
+            'product_image' => $image,
+        ];
+        return $result;
+    }
+
+    private function constructUkm($key, $order, $user_image = null) {
+        $ukm = Ukm::find($key->id);
+        $count = $ukm->product()->count();
         $cat = $this->getCategory($key->category);
         $address = $this->getAddress($key);
         Mapper::map(
             $key->latitude, 
             $key->longitude
         );
-
-        return [
+        
+        $ukm_image = $ukm->imageUkm()->get();
+        $product_image = $ukm->imageProduct()->get();
+        $result = [
             'id'            => $key->id,
             'order'			=> $order,
             'name' 			=> $key->name,
@@ -100,7 +136,11 @@ class HomeController extends Controller
             'alamat' 		=> $key->alamat,
             'kecamatan' 	=> $key->kecamatan,
             'kabupaten' 	=> $key->kabupaten,
+            'ukm_image'     => $ukm_image,
+            'product_image' => $product_image,
         ];
+        if( $user_image != null ) $result['user_image'] = $user_image;
+        return $result;
     }
 
     private function getCategory(string $type)
@@ -146,6 +186,12 @@ class HomeController extends Controller
         $ukm['gallery'] = $image;
         unset($ukm['category_id']);
         unset($ukm['user_id']);
+
+        Mapper::map(
+            $location->latitude, 
+            $location->longitude
+        );
+
         $types = [
                 'website',
                 'telepon',
@@ -185,10 +231,35 @@ class HomeController extends Controller
         $image = $user->image()->first();
         $user->url = ( $image != null ? 'storage/' . $image->path : 'default-profile.jpg');
         $user->ukm = $user->ukm()->card()->first();
+        // var_dump($image);die();
+        $types = [
+                'website',
+                'telepon',
+                'whatsapp',
+                'facebook',
+                'instagram',
+                'twitter',
+                'line',
+                'tokopedia',
+                'bukalapak',
+        ];
+        foreach($types as $type) 
+        {
+            $social['has_' . $type] = false;
+        }
         if( $user->ukm != null )
         {
-            $user->ukm = $this->constructCard($user->ukm, 0);
-            $user->product = $user->ukm()->first()->product()->get();
+            $ukm = $user->ukm()->first();
+            $user->ukm = $this->constructUkm($user->ukm, 0, $image);
+            $user->product = $ukm->product()->get();
+            $contact = $ukm->detail()->get();
+            
+            for($i=0; $i < sizeOf($contact); $i++) 
+            {
+                $social['has_' . $contact[$i]->type] = true;
+            }
+            $user->social = $social;
+            $user->contact = $contact;
         } else {
             Mapper::location('blitar')->map(['marker' => false, 'eventBeforeLoad' => 'addMarkerListener(map);']);
         }

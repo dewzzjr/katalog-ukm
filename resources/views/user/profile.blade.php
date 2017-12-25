@@ -3,21 +3,36 @@
 @section('title', $data->name) 
 
 @section('style')
+
 <link rel="stylesheet" type="text/css" href="{{ asset('css/detail.css') }}">
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/viewerjs/0.10.0/viewer.min.css">
+<style>
+    img#preview {
+        max-width: 400px;
+        max-height: 400px;
+    }
+    .mapper {
+        height: 500px;
+    }
+</style>
 @endsection
+
+@section('content')
+
   <div class="ui fixed inverted menu">
     <div class="ui container">
 		<a href="{{ URL::previous() }}" class="header item">
-			<img class="logo" src="/favicon.png"> 
+			<img class="logo" src="{{ url('favicon.png') }}"> 
             <i class="arrow left icon"></i> Back
 		</a>
         <a href="{{ route('home') }}" class="item">
             <i class="block layout icon"></i> Home
         </a>
 		@guest
+
 			<a class="ui right item inverted button" href="{{ route('login') }}">Login</a>
 		@else
+
 			<a class="ui right link item" href="{{ route('user') }}">
 				<i class="user icon"></i> {{ Auth::user()->name }}
 			</a>
@@ -30,15 +45,16 @@
 				{{ csrf_field() }}
 			</form>
 		@endguest
+
     </div>
   </div>
-
-@section('content')
 @include('user.components.header')
 @include('user.components.navbar')
+
     <!-- Tab container -->
     <div id="sticky-menu" class="ui text container borderless">
         @if($errors->any())
+
         <div class="ui negative message">
             <i class="close icon"></i>
             <div class="header">
@@ -46,18 +62,22 @@
             </div>
             <ul>
                 @foreach( $errors->all() as $error )
+
                 <li>{{ $error }}</li>
                 @endforeach
+
             </ul>
         </div>
-        @elseif(isset($success))
+        @endif
+        @if(session()->has('message'))
+
         <div class="ui positive message">
             <i class="close icon"></i>
             <div class="header">
                 Succes!
             </div>
             <ul>
-                <li>{{ $success }}</li>
+                <li>{{ session()->get('message') }}</li>
             </ul>
         </div>
         @endif
@@ -65,12 +85,14 @@
         @if(Auth::id() == $data->id)
             @include('user.components.setting')
         @endif
+
     </div>
 
 @include('layouts.footer')
 @endsection 
 
 @push('scripts')
+
     <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
     <script>

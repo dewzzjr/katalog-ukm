@@ -9,7 +9,7 @@
 	<title>@yield('title')</title>
 
 	<!-- Semantic CSS -->
-	<link rel="icon" href="{{ asset('icon.png') }}" title="Katalog UKM">
+	<link rel="icon" href="{{ url('icon.png') }}" title="Katalog UKM">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css" />
 	@yield('style')
 	
@@ -22,6 +22,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 	@stack('scripts')
+
 </body>
 
 </html>

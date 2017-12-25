@@ -3,9 +3,18 @@
 @section('title', 'UKM - ' . $data->name) 
 
 @section('style')
+
 <link rel="stylesheet" type="text/css" href="{{ asset('css/detail.css') }}">
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/viewerjs/0.10.0/viewer.min.css">
+<style>
+.mapper {
+	height:500px
+}
+</style>
 @endsection
+
+@section('content')
+
   <div class="ui fixed inverted menu">
     <div class="ui container">
 		<a href="{{ URL::previous() }}" class="header item">
@@ -32,8 +41,6 @@
 		@endguest
     </div>
   </div>
-
-@section('content')
 @include('detail.components.header')
 @include('detail.components.navbar')
     <!-- Tab container -->
