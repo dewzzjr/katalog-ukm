@@ -113,11 +113,11 @@
                 <tbody>
                 @foreach( $ukms as $ukm )
                     <tr>
-                        <td><a href="{{ url('/admin/ukm/' . $ukm->id) }}">{{ $ukm->name }}</a></td>
+                        <td><a href="{{ url('/ukm/' . $ukm->id) }}">{{ $ukm->name }}</a></td>
                         <td>{{ $ukm->description }}</td>
                         <td>
                             @if(isset($ukm->user))
-                            <a href="{{ url('/admin/user/' . $ukm->user->id) }}">
+                            <a href="{{ url('/profile/' . $ukm->user->id) }}">
                             {{ $ukm->user->name }}
                             </a>
                             @endif
@@ -311,7 +311,7 @@
           map.addListener('click', function(e) {
               placeMarker(e.latLng, map);
               $('[name="latitude"]').val(e.latLng.lat())
-              $('[name="longitude"').val(e.latLng.lng())
+              $('[name="longitude"]').val(e.latLng.lng())
               console.log(e.latLng.lat())
               console.log(e.latLng.lng())
           });

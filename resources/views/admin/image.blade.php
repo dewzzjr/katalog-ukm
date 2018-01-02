@@ -113,11 +113,11 @@
                 <tbody>
                 @foreach( $ukms as $image )
                     <tr>
-                        <td><a href="{{ url($image->path) }}">{{ $image->path }}</a></td>
+                        <td><a target="_blank" href="{{ url('storage/'.$image->path) }}">Gambar UKM {{ $image->id }}</a></td>
                         <td>{{ $image->description }}</td>
                         <td>
-                            <a href="{{ url('admin/ukm') }}">UKM</a>: {{ $image->ukm_id}} <br />
-                            Pengguna: {{ $image->user_id }}
+                            <a href="{{ url('ukm/'. $image->ukm_id) }}">UKM</a>: {{ $image->ukm_id}} <br />
+                            <a href="{{ url('profile/'. $image->user_id) }}">Pengguna</a>: {{ $image->user_id }}
                         </td>
                         <td>
                         <div class="btn-group-vertical btn-block">
@@ -146,9 +146,11 @@
                 @endforeach
                 @foreach( $users as $image )
                     <tr>
-                        <td><a href="{{ url($image->path) }}">{{ $image->path }}</a></td>
+                        <td><a href="{{ url('storage/'.$image->path) }}">Gambar Profil {{ $image->id }}</a></td>
                         <td>{{ $image->description }}</td>
-                        <td><a href="{{ url('admin/user') }}">Pengguna</a>: {{ $image->user_id }}</td>
+                        <td>
+                            <a href="{{ url('profile/'. $image->user_id) }}">Pengguna</a>: {{ $image->user_id }}
+                        </td>
                         <td>
                         <div class="btn-group-vertical btn-block">
                             <button 
@@ -176,12 +178,12 @@
                 @endforeach
                 @foreach( $products as $image )
                     <tr>
-                        <td><a href="{{ url($image->path) }}">{{ $image->path }}</a></td>
+                        <td><a href="{{ url('storage/'.$image->path) }}">Gambar Produk {{ $image->id }}</a></td>
                         <td>{{ $image->description }}</td>
                         <td>
-                            <a href="{{ url('admin/product') }}">Produk</a>: {{ $image->product_id }} <br/>
-                            UKM: {{ $image->ukm_id }} <br/>
-                            Pengguna: {{ $image->user_id }}
+                            Produk: {{ $image->product_id }} <br/>
+                            <a href="{{ url('ukm/'. $image->ukm_id) }}">UKM</a>: {{ $image->ukm_id}} <br />
+                            <a href="{{ url('profile/'. $image->user_id) }}">Pengguna</a>: {{ $image->user_id }}
                         </td>
                         <td>
                         <div class="btn-group-vertical btn-block">

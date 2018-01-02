@@ -106,12 +106,12 @@
                 @foreach( $users as $user )
                     <tr>
                       <td>
-                        <a href="{{ url('/admin/user/' . $user->id) }}">{{ $user->name }}</a>
+                        <a href="{{ url('/profile/' . $user->id) }}">{{ $user->name }}</a>
                       </td>
                       <td><a href="mailto:{{$user->email}}">{{ $user->email }}</a></td>
                       <td>
                         @if(isset($user->ukm))
-                        <a href="{{ url('/admin/ukm/' . $user->ukm->id) }}">
+                        <a href="{{ url('/ukm/' . $user->ukm->id) }}">
                         {{ $user->ukm->name }}
                         </a>
                         @endif
