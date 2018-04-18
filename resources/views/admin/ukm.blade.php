@@ -34,8 +34,6 @@
             <div class="box" id="ukm-box" >
                     <form method="POST" action="{{ url('admin/ukm/add') }}">
                     {{ csrf_field() }}
-                    <input name="latitude" type="hidden"/>
-                    <input name="longitude" type="hidden"/>
                     <div class="box-header">
                       <h4 class="title" id="title-ukm"></h4>
                     </div>
@@ -72,6 +70,14 @@
                               <label for="kecamatan">Kecamatan</label>
                               <input name="kecamatan" type="text" class="form-control" placeholder="Kecamatan" required/>
                             </div>
+                            <div class="form-group">
+                              <label for="latitude">Latitude</label>
+                              <input name="latitude" type="text" class="form-control" placeholder="Latitude" required/>
+                            </div>
+                            <div class="form-group">
+                              <label for="longitude">Longitude</label>
+                              <input name="longitude" type="text" class="form-control" placeholder="Longitude" required/>
+                            </div>
                           </div>
                           <div class="col-md-9 col-sm-12 mapper" >
                             {!! Mapper::render() !!}
@@ -87,7 +93,7 @@
           <a 
               href="#ukm-box"
               id="add-ukm"
-              class="btn btn-app" 
+              class="btn btn-app btn-primary" 
               onclick="setInput(this)">
             <i class="fa fa-play"></i> Tambah
           </a>
@@ -283,7 +289,7 @@
                     value: cat,
                     text: catname
                 }))
-              var myLatLng = {lat: lat, lng: lng};
+              var myLatLng = {lat: parseFloat(lat), lng: parseFloat(lng)};
               placeMarker(myLatLng, maps[0].map)
               box.find('form').attr('action', '{{ url("admin/ukm") }}/' + id + '/edit')
             } else {

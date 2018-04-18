@@ -312,7 +312,7 @@
                     @foreach( $data->ukm['ukm_image'] as $image )
 
                     <tr>
-                        <td><a href="{{ url($image->path) }}"> {{ $image->ukm_name }} {{ $image->id }}</a></td>
+                        <td><a href="{{ url('storage/'.$image->path) }}"> {{ $image->ukm_name }} {{ $image->id }}</a></td>
                         <td>{{ $image->description }}</td>
                         <td>UKM</td>
                         
@@ -334,7 +334,7 @@
                     @foreach( $data->ukm['product_image'] as $image )
 
                     <tr>
-                        <td><a href="{{ url($image->path) }}">Gambar Produk {{ $image->id }}</a></td>
+                        <td><a href="{{ url('storage/'.$image->path) }}">Gambar Produk {{ $image->id }}</a></td>
                         <td>{{ $image->description }}</td>
                         <td>Produk: {{ $image->product_name }} </td>
                         <td>
@@ -355,7 +355,7 @@
                     @foreach( $data->ukm['user_image'] as $image )
 
                     <tr>
-                        <td><a href="{{ url($image->path) }}">Gambar Profil</a></td>
+                        <td><a href="{{ url('storage/'.$image->path) }}">Gambar Profil</a></td>
                         <td>{{ $image->description }}</td>
                         <td>Profil</td>
                         

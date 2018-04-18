@@ -2,7 +2,7 @@
 <html lang="id">
 
 <head>
-    <title>Selamat datang di Katalog UKM</title>
+    <title>Selamat datang di Katalog IKM</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -171,9 +171,9 @@
 
             <div class="ui text container">
                 <h1 class="ui header">
-                    Selamat datang di Katalog UKM
+                    Selamat datang di Katalog IKM
                 </h1>
-                <h2>Memberikan informasi tentang Usaha Kecil Menengah beserta produk yang ditawarkan.</h2>
+                <h2>Memberikan informasi tentang Industri Kecil Menengah beserta produk yang ditawarkan.</h2>
                 <div class="ui center aligned basic segment">
                 <form method="GET" action="{{ route('home') }}">
                     <div class="ui left icon action input">
@@ -229,7 +229,7 @@
     <!-- Footer -->
     <div class="ui inverted vertical footer segment">
         <div class="ui text container">
-            @copyright IKM Blitar 2017
+            @copyright IKM Blitar 2018
         </div>
     </div>
     <!-- Semantic JavaScript -->

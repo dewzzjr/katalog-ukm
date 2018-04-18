@@ -1,6 +1,6 @@
 @extends('layout') 
 
-@section('title', 'Katalog UKM') 
+@section('title', 'Katalog IKM') 
 
 @section('style')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/home.css') }}">

@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin/user/{id}/delete', 'UserController@delete');
         Route::get('/admin/user/{id}/admin', 'UserController@setAdmin');
+        Route::get('/admin/user/{id}/reset', 'UserController@reset');
     });
     Route::get('/admin/ukm/{id}/delete', 'UkmController@delete');
     Route::get('/admin/product/{id}/delete', 'ProductController@delete');
