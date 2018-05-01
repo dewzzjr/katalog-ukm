@@ -28,7 +28,7 @@
 			<a class="ui right link item" href="{{ route('user') }}">
 				<i class="user icon"></i> {{ Auth::user()->name }}
 			</a>
-			<a class="ui right item inverted button" href="{{ route('logout') }}"
+			<a class="ui item inverted button" href="{{ route('logout') }}"
 				onclick="event.preventDefault();
 							document.getElementById('logout-form').submit();">
 				Logout

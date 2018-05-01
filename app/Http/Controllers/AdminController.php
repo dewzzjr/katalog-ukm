@@ -74,19 +74,12 @@ class AdminController extends Controller
         $ukms = DB::table('ukm_images')->orderBy('ukm_id', 'asc')->get();
         $users = DB::table('user_images')->orderBy('user_id', 'asc')->get();
         $data = [
-            'ukms' => $this->convertPath($ukms),
-            'users' => $this->convertPath($users),
-            'products' => $this->convertPath($products),
+            'ukms' => $ukms,
+            'users' => $users,
+            'products' => $products,
         ];
         // return $data;
         return view('admin.image')->with($data);
-    }
-
-    private function convertPath( $images ) {
-        foreach ($images as $image) {
-            $image->path = $image->path . sprintf("%03d", $image->id) . '.' . $image->ext;
-        }
-        return $images;
     }
 
     public function product()

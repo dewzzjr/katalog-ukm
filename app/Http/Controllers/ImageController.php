@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 class ImageController extends Controller
@@ -39,51 +40,43 @@ class ImageController extends Controller
             ->withInput();
         }
         
-        $id = 0;
-        $name = "";
-        $destination = "";
-        $image = $request->file('image');
-        $extension = $image->getClientOriginalExtension();
         if($request->input('user_id') !== null) {
-            $destination = '/user';
-            $name = sprintf("%03d", $request->input('user_id')) . '_';
-            $id = DB::table('user_images')->insertGetId(
-                [
-                    'user_id'       => $request->input('user_id'), 
-                    'description'   => $request->input('description'),
-                    'path'          => $destination . '/' . $name,
-                    'ext'           => $extension,
-                ]
+            $this->doUpload(
+                'user',
+                $request->input('user_id'),
+                $request->input('description'),
+                $request->file('image')
             );
         } else 
         if ($request->input('ukm_id') !== null) {
-            $destination = '/ukm';
-            $name = sprintf("%03d", $request->input('ukm_id')) . '_';
-            $id = DB::table('ukm_images')->insertGetId(
-                [
-                    'ukm_id'        => $request->input('ukm_id'), 
-                    'description'   => $request->input('description'),
-                    'path'          => $destination . '/' . $name,
-                    'ext'           => $extension,
-                ]
+            $this->doUpload(
+                'ukm',
+                $request->input('ukm_id'),
+                $request->input('description'),
+                $request->file('image')
             );
         } else 
         if ($request->input('product_id') !== null) {
-            $destination = '/product';
-            $name = sprintf("%03d", $request->input('product_id')) . '_';
-            $id = DB::table('product_images')->insertGetId(
-                [
-                    'product_id'    => $request->input('product_id'), 
-                    'description'   => $request->input('description'),
-                    'path'          => $destination . '/' . $name,
-                    'ext'           => $extension,
-                ]
+            $this->doUpload(
+                'product',
+                $request->input('product_id'),
+                $request->input('description'),
+                $request->file('image')
             );
         }
         
-        $input['imagename'] = $name . sprintf("%03d", $id) . '.' . $extension;
-        $destinationPath = public_path($destination);
-        $image->move($destinationPath, $input['imagename']);
         return redirect()->back()->with('message','Image Upload successful');
+    }
+
+    private function doUpload($type, $id, $description, $file) {
+        $path = Storage::disk('public')->putFile($type . '/' . $id, $file);
+        $id = DB::table($type . '_images')->insertGetId(
+            [
+                $type . '_id'   => $id, 
+                'description'   => $description,
+                'path'          => $path,
+                'ext'           => $file->getClientOriginalExtension(),
+            ]
+        );
     }
 }

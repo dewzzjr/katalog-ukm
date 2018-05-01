@@ -3,50 +3,21 @@
         <div class="ui active tab" data-tab="product">
             <h2 class="header">Daftar Produk</h2>
             <div class="ui items">
+                @foreach($data->product as $item)
                 <div class="item">
                     <div class="ui small image">
-                        <img src="image.png">
+                        <img src="{{ url('noimage.png') }}">
                     </div>
                     <div class="content">
-                        <div class="header">Arrowhead Valley Camp</div>
+                        <div class="header">{{ $item->name }}</div>
                         <div class="meta">
-                            <span class="price">$1200</span>
-                            <span class="stay">1 Month</span>
+                            <span class="price">{{ $item->money }}</span>
                         </div>
                         <div class="description">
-                            <p></p>
+                            <p>{{ $item->description }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="ui small image">
-                        <img src="image.png">
-                    </div>
-                    <div class="content">
-                        <div class="header">Buck's Homebrew Stayaway</div>
-                        <div class="meta">
-                            <span class="price">$1000</span>
-                            <span class="stay">2 Weeks</span>
-                        </div>
-                        <div class="description">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="ui small image">
-                        <img src="image.png">
-                    </div>
-                    <div class="content">
-                        <div class="header">Astrology Camp</div>
-                        <div class="meta">
-                            <span class="price">$1600</span>
-                            <span class="stay">6 Weeks</span>
-                        </div>
-                        <div class="description">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
