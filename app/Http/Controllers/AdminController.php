@@ -40,7 +40,7 @@ class AdminController extends Controller
 
     public function user()
     {
-        $users = User::where('is_admin', 0)->get();
+        $users = User::all();
         $users = $users->each(function ($item, $key) {
             $item->ukm = $item->ukm()->first();
         });
@@ -70,8 +70,19 @@ class AdminController extends Controller
 
     public function image()
     {
-        $products = DB::table('product_images')->orderBy('product_id', 'asc')->get();
-        $ukms = DB::table('ukm_images')->orderBy('ukm_id', 'asc')->get();
+        $products = DB::table('product_images')
+        ->join('products', 'product_images.product_id', '=', 'products.id')
+        ->join('ukm', 'products.ukm_id', '=', 'ukm.id')
+        ->select('ukm.user_id as user_id', 'products.ukm_id as ukm_id', 'product_images.*')
+        ->orderBy('product_id', 'asc')
+        ->get();
+
+        $ukms = DB::table('ukm_images')
+        ->join('ukm', 'ukm_images.ukm_id', '=', 'ukm.id')
+        ->orderBy('ukm_id', 'asc')
+        ->select('ukm.user_id as user_id', 'ukm_images.*')
+        ->get();
+
         $users = DB::table('user_images')->orderBy('user_id', 'asc')->get();
         $data = [
             'ukms' => $ukms,

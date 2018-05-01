@@ -13,7 +13,14 @@ $(document)
 
         // create tab
         $('.menu .item')
-            .tab();
+            .tab({
+                onLoad: function () {
+                    google.maps.event.trigger(maps[0].map, 'resize');
+                    maps[0].map.setCenter(maps[0].markers[0].getPosition());
+                    maps[0].map.panTo(maps[0].markers[0].getPosition());
+                    maps[0].map.setZoom(14);
+                }
+            });
 
         // create menu
         $('.vertical.menu')

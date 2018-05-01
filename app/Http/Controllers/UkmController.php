@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Ukm;
 use App\Location;
 use Validator;
@@ -32,7 +33,12 @@ class UkmController extends Controller
             'alamat'	    =>  'required|max:255',
             'kabupaten'	    =>  'required|max:255',
             'kecamatan'     =>  'required|max:255',
+        ],
+        [
+            'longitude.required' => 'Map is not set',
+            'latitude.required'  => 'Map is not set'
         ]);
+
         // If validator fails, short circut and redirect with errors
         if($validator->fails()){
             return back()
@@ -55,7 +61,7 @@ class UkmController extends Controller
         $location->latitude = $request->input('latitude');
         $location->longitude = $request->input('longitude');
         $location->save();
-        return  redirect()->back()->with('message', 'UKM telah dibuat.');
+        return redirect()->back()->with('message', 'UKM telah dibuat.');
     }
 
     public function update(Request $request, $id)
@@ -70,7 +76,12 @@ class UkmController extends Controller
             'alamat'	    =>  'required|max:255',
             'kabupaten'	    =>  'required|max:255',
             'kecamatan'     =>  'required|max:255',
+        ],
+        [
+            'longitude.required' => 'Map is not set',
+            'latitude.required'  => 'Map is not set'
         ]);
+
         // If validator fails, short circut and redirect with errors
         if($validator->fails()){
             return back()
@@ -85,7 +96,7 @@ class UkmController extends Controller
         $ukm->category_id = $request->input('category_id');
         $ukm->save();
         
-        $location = Ukm::location();
+        $location = $ukm->location()->first();
         $location->ukm_id = $ukm->id;
         $location->alamat = $request->input('alamat');
         $location->kabupaten = $request->input('kabupaten');
@@ -107,6 +118,64 @@ class UkmController extends Controller
         }
         $ukm->delete();
         return  redirect()->back()->with('message', 'UKM telah dihapus.');
+    }
+
+    public function detail(Request $request, $id)
+    {
+        // return $request;
+        $validator = Validator::make($request->all(), [
+            'telepon'	    => 'required|numeric|min:11',
+            'whatsapp'  	=> 'nullable|numeric|min:11',
+            'facebook'      => 'nullable|regex:/^[A-z0-9_]+$/',
+            'twitter'  	    => 'nullable|regex:/^[A-z0-9_]+$/',
+            'instagram' 	=> 'nullable|regex:/^[A-z0-9_]+$/',
+        ]);
+
+        // If validator fails, short circut and redirect with errors
+        if($validator->fails()){
+            return back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+
+        //add new ukm to database
+        $ukm = Ukm::findOrFail($id);
+        
+        foreach ($request->all() as $key => $value) {
+            if ( $key == '_token' || $key == 'id' ) { // token
+                continue;
+            }
+            $exist = DB::table('ukm_details')
+                ->where('ukm_id', $id )
+                ->where('type', $key)->get();
+            if ( count($exist) > 0 ) :
+                if($request->input($key) == null)
+                {
+                    DB::table('ukm_details')
+                    ->where('ukm_id', $id )
+                    ->where('type', $key)
+                    ->delete();
+                } else
+                {
+                    DB::table('ukm_details')
+                    ->where('ukm_id', $id )
+                    ->where('type', $key)
+                    ->update([
+                        'contact' => $value
+                    ]);
+                }
+            else :
+                if($request->input($key) != null)
+                {
+                    DB::table('ukm_details')->insert([
+                        'ukm_id'  => $id,
+                        'contact' => $value,
+                        'type'    => $key
+                    ]);
+                }
+            endif;
+        }
+        return redirect()->back()->with('message', 'Detail UKM telah diperbarui.');
     }
 
     public function uploadImage(Request $request, $id)

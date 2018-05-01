@@ -10,14 +10,14 @@
 			Kategori
 			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a class="inverted item" href="{{ route('home') }}?category=makanan"><i class="icon food"></i> Makanan</a>
+				<a class="inverted item" href="{{ route('home') }}?category%5B%5D=2"><i class="icon food"></i> Makanan</a>
 				<a 
 				class="inverted item" 
-				href="{{ route('home') }}?category=fashion"><i class="icon pied piper hat">
+				href="{{ route('home') }}?category%5B%5D=3"><i class="icon pied piper hat">
 				</i> Fashion</a>
 				<a 
 				class="inverted item" 
-				href="{{ route('home') }}?category=kerajinan">
+				href="{{ route('home') }}?category%5B%5D=1">
 				<i class="icon cut"></i> Kerajinan</a>
 			</div>
 		</div>

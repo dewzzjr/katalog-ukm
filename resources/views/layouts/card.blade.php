@@ -1,6 +1,5 @@
-<div class="card">
+<div class="ui card">
     <div class="ui fluid">
-        
         <div class="content mapper">
             {!! Mapper::render($order) !!}
         </div>

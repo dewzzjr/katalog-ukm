@@ -13,6 +13,7 @@ class UkmTableSeeder extends Seeder
     {
         $this->ukm();
         $this->detail();
+        $this->product();
         $this->call(LocationsTableSeeder::class);
     }
 
@@ -234,6 +235,21 @@ class UkmTableSeeder extends Seeder
             'ukm_id'    => 9, 
             'type'      => 'telepon',
             'contact'   => '0342552143',
+        ]);
+    }
+
+    private function product() {
+        DB::table('products')->insert([
+            'ukm_id'        => 19, 
+            'name'          => 'Sari Belimbing Gogo',
+            'description'   => 'Minuman Sari Buah Belimbing Asli',
+            'price'         => 4000,
+        ]);
+        DB::table('products')->insert([
+            'ukm_id'        => 21, 
+            'name'          => 'Sambel Pecel Lezati',
+            'description'   => 'Sambel Pecel Lezati',
+            'price'         => 5000,
         ]);
     }
 }

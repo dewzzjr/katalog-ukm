@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Mail;
 
 class User extends Authenticatable
@@ -41,6 +43,12 @@ class User extends Authenticatable
         return $this->hasOne('App\Ukm');
     }
 
+    
+    public function image()
+    {
+        return DB::table('user_images')->where('user_id', $this->id)->get();
+    }
+
     public function isAdmin()
     {
         return $this->is_admin; // this looks for an admin column in your users table
@@ -61,5 +69,15 @@ class User extends Authenticatable
         Mail::send('emails.welcome', ['user' => $user, 'token' => $token], function ($m) use ($user) {
             $m->to($user->email, $user->name)->subject('Selamat Datang di Katalog UKM');
         });
+    }
+
+    public function deleteImage ()
+    {
+        $images = DB::table('user_images')->where('user_id', $this->id )->get();
+        foreach($images as $image)
+        {
+            Storage::disk('public')->delete($image->path);
+        }
+        DB::table('user_images')->where('user_id', $this->id )->delete();
     }
 }

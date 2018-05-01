@@ -129,10 +129,10 @@
                 <tbody>
                 @foreach( $products as $product )
                     <tr>
-                      <td><a href="{{ url('/admin/product/' . $product->id) }}">{{ $product->name }}</a></td>
+                      <td>{{ $product->name }}</td>
                       <td>
                         @if(isset($product->ukm))
-                        <a href="{{ url('/admin/ukm/' . $product->ukm->id) }}">
+                        <a href="{{ url('/ukm/' . $product->ukm->id) }}">
                         {{ $product->ukm->name }}
                         </a>
                         @endif

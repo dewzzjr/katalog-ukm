@@ -34,8 +34,6 @@
             <div class="box" id="ukm-box" >
                     <form method="POST" action="{{ url('admin/ukm/add') }}">
                     {{ csrf_field() }}
-                    <input name="latitude" type="hidden"/>
-                    <input name="longitude" type="hidden"/>
                     <div class="box-header">
                       <h4 class="title" id="title-ukm"></h4>
                     </div>
@@ -44,7 +42,7 @@
                           <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                               <label>Pemilik</label>
-                              <select name="user_id" id="user" class="form-control select2" style="width: 100%;">
+                              <select name="user_id" id="user" class="form-control select2" style="width: 100%;" required>
                               </select>
                             </div>
                             <div class="form-group">
@@ -54,23 +52,31 @@
                             </div>
                             <div class="form-group">
                               <label for="nama">Nama</label>
-                              <input name="name" type="text" class="form-control" placeholder="Masukkan Nama UKM" />
+                              <input name="name" type="text" class="form-control" placeholder="Masukkan Nama UKM" required/>
                             </div>
                             <div class="form-group">
                               <label for="description">Deskripsi</label>
-                              <input name="description" type="text" class="form-control" placeholder="Deskripsi UKM Anda (jenis produk, ciri khas, slogan)" />
+                              <input name="description" type="text" class="form-control" placeholder="Deskripsi UKM Anda (jenis produk, ciri khas, slogan)" required/>
                             </div>
                             <div class="form-group">
                               <label for="alamat">Alamat</label>
-                              <input name="alamat" type="text" class="form-control" placeholder="Masukkan Alamat" />
+                              <input name="alamat" type="text" class="form-control" placeholder="Masukkan Alamat" required/>
                             </div>
                             <div class="form-group">
                               <label for="kabupaten">Kabupaten</label>
-                              <input name="kabupaten" type="text" class="form-control" placeholder="Kabupaten" />
+                              <input name="kabupaten" type="text" class="form-control" placeholder="Kabupaten" required/>
                             </div>
                             <div class="form-group">
                               <label for="kecamatan">Kecamatan</label>
-                              <input name="kecamatan" type="text" class="form-control" placeholder="Kecamatan" />
+                              <input name="kecamatan" type="text" class="form-control" placeholder="Kecamatan" required/>
+                            </div>
+                            <div class="form-group">
+                              <label for="latitude">Latitude</label>
+                              <input name="latitude" type="text" class="form-control" placeholder="Latitude" required/>
+                            </div>
+                            <div class="form-group">
+                              <label for="longitude">Longitude</label>
+                              <input name="longitude" type="text" class="form-control" placeholder="Longitude" required/>
                             </div>
                           </div>
                           <div class="col-md-9 col-sm-12 mapper" >
@@ -87,7 +93,7 @@
           <a 
               href="#ukm-box"
               id="add-ukm"
-              class="btn btn-app" 
+              class="btn btn-app btn-primary" 
               onclick="setInput(this)">
             <i class="fa fa-play"></i> Tambah
           </a>
@@ -113,11 +119,11 @@
                 <tbody>
                 @foreach( $ukms as $ukm )
                     <tr>
-                        <td><a href="{{ url('/admin/ukm/' . $ukm->id) }}">{{ $ukm->name }}</a></td>
+                        <td><a href="{{ url('/ukm/' . $ukm->id) }}">{{ $ukm->name }}</a></td>
                         <td>{{ $ukm->description }}</td>
                         <td>
                             @if(isset($ukm->user))
-                            <a href="{{ url('/admin/user/' . $ukm->user->id) }}">
+                            <a href="{{ url('/profile/' . $ukm->user->id) }}">
                             {{ $ukm->user->name }}
                             </a>
                             @endif
@@ -283,7 +289,7 @@
                     value: cat,
                     text: catname
                 }))
-              var myLatLng = {lat: lat, lng: lng};
+              var myLatLng = {lat: parseFloat(lat), lng: parseFloat(lng)};
               placeMarker(myLatLng, maps[0].map)
               box.find('form').attr('action', '{{ url("admin/ukm") }}/' + id + '/edit')
             } else {
@@ -311,7 +317,7 @@
           map.addListener('click', function(e) {
               placeMarker(e.latLng, map);
               $('[name="latitude"]').val(e.latLng.lat())
-              $('[name="longitude"').val(e.latLng.lng())
+              $('[name="longitude"]').val(e.latLng.lng())
               console.log(e.latLng.lat())
               console.log(e.latLng.lng())
           });

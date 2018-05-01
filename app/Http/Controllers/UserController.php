@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'  => 'required|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
         ]);
         // If validator fails, short circut and redirect with errors
         if($validator->fails()){
@@ -35,7 +35,15 @@ class UserController extends Controller
         }
         //generate a password for the new users
         $pw = User::generatePassword();
+        
+        //$user = User::withTrashed()->where('email', $request['email']);
         //add new user to database
+        /*
+        if ($user->count() == 0 ) $user = new User;
+        else {
+            $user->restore();
+        }
+        */
         $user = new User;
         $user->name = $request->input('name');
         $user->email = $request->input('email');
@@ -70,9 +78,18 @@ class UserController extends Controller
     public function delete(Request $request, $id)
     {
         $user = User::find($id);
-        $user->delete();
+        $user->forceDelete();
         // User::sendWelcomeEmail($user);
         return  redirect()->back()->with('message', 'Akun telah dihapus.');
+    }
+    
+    public function setAdmin(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->is_admin = ($user->is_admin ? false : true);
+        $user->save();
+        // User::sendWelcomeEmail($user);
+        return  redirect()->back()->with('message', 'Status admin telah diubah.');
     }
 
     public function reset(Request $request, $id)
